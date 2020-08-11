@@ -1,6 +1,7 @@
 import { createMuiTheme, } from '@material-ui/core/styles';
 import { Link as RouterLink } from 'react-router-dom';
 import './assets/fonts/fonts.css'
+import TransparentRouterLink from 'components/TransparentRouterLink';
 
 const HEADER_FONT_FAMILY = 'Quicksand, Helvetica, "serif"'
 
@@ -52,7 +53,11 @@ export const theme = (() => {
         },
         props: {
             MuiLink: {
-                component: RouterLink
+                underline: 'none',
+                TypographyClasses: {
+                    color: 'textSecondary'
+                },
+                component: TransparentRouterLink,
             },
             MuiButton: {
                 disableElevation: true,

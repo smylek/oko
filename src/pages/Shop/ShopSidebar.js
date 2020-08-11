@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Grid, Typography, makeStyles } from '@material-ui/core'
-import { usePresence } from 'framer-motion'
+import { usePresence, motion, AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import clsx from 'clsx'
 
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const Item = ({ children, level = 0 }) => {
+const ShopSidebarItem = ({ children, level = 0 }) => {
     const classes = useStyles()
 
     return <Box pl={level * 2} py={.25}>
@@ -35,11 +35,12 @@ const Item = ({ children, level = 0 }) => {
         </Typography>
     </Box>
 }
-const Shop = () => {
-    const [t] = useTranslation()
-    const [isPresent, safeToRemove] = usePresence()
 
-    const colors = [
+
+const ShopSidebar = () => {
+    const [t] = useTranslation()
+
+    const colors = React.useMemo(() => [
         {
             label: t('white'),
             value: 'WHITE'
@@ -68,31 +69,29 @@ const Shop = () => {
             label: t('colorless'),
             value: 'COLORLESS'
         },
-    ]
-
-
-    React.useEffect(() => {
-        !isPresent && safeToRemove()
-    }, [isPresent])
+    ], [])
 
     return (
-        <Box px={6}>
-            <Grid container>
-                <Grid item md={2}>
-                    <Item>Category</Item>
-                    <Item level={1}>Clothing</Item>
-                    <Item level={2}>T-shirts</Item>
+        <AnimatePresence>
+            <Box
+                component={motion.div}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+            >
+                <ShopSidebarItem>Category</ShopSidebarItem>
+                <ShopSidebarItem level={1}>Clothing</ShopSidebarItem>
+                <ShopSidebarItem level={2}>T-shirts</ShopSidebarItem>
 
-                    <Box mt={1} />
+                <Box mt={1} />
 
-                    <Item>Color</Item>
-                    {colors.map(({ label, value }) => <Item key={value} level={2}>{label}</Item>)}
-                </Grid>
-                <Grid item md={9}></Grid>
-                <Grid item md={1}></Grid>
-            </Grid>
-        </Box>
+                <ShopSidebarItem>Color</ShopSidebarItem>
+                {colors.map(({ label, value }) => <ShopSidebarItem key={value} level={2}>{label}</ShopSidebarItem>)}
+
+            </Box>
+        </AnimatePresence>
+
     )
 }
 
-export default Shop
+export default ShopSidebar

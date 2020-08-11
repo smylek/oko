@@ -1,0 +1,9 @@
+@font-face {
+    font-family: 'Quicksand';
+    src: local('Quicksand'), url(./Quicksand-Bold.ttf) ;
+  }
+
+  @font-face {
+    font-family: 'Raleway';
+    src: local('Raleway'), url(./Raleway-Medium.ttf) ;
+  }

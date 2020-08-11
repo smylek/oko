@@ -1,26 +1,31 @@
 import React from 'react'
-import { IconButton, makeStyles, Box, TextField, InputBase } from '@material-ui/core'
+import { IconButton, makeStyles, Box, InputBase, fade } from '@material-ui/core'
 import SearchIcon from '@material-ui/icons/Search';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { HOMEPAGE_ANIMATION_TIME } from 'constans';
 
 const useStyles = makeStyles(theme => ({
     root: {
         borderRadius: 50,
         overflow: 'hidden',
         border: '3px solid',
-        borderColor: theme.palette.common.white,
-        transition: 'border-color .2s'
+        borderColor: fade(theme.palette.common.white, 0),
+        transition: `border-color .15s`
     },
     rootOpen: {
         borderColor: theme.palette.common.black
     },
     rootDarkBg: {
-        borderColor: theme.palette.common.black
+        borderColor: fade(theme.palette.common.black, 0)
+    },
+    rootDarkBgOpen: {
+        borderColor: theme.palette.common.white
     },
     icon: {
-        color: theme.palette.common.black
+        color: theme.palette.common.black,
+        transition: `color ${HOMEPAGE_ANIMATION_TIME}s`
     },
     iconDarkBg: {
         color: theme.palette.common.white
@@ -31,6 +36,7 @@ const useStyles = makeStyles(theme => ({
     },
     inputInput: {
         ...theme.typography.h6,
+
         '&::placeholder': {
             ...theme.typography.body1
         }
@@ -61,7 +67,11 @@ const NavbarSearch = ({ darkBg }) => {
     return (
         <Box
             display="flex"
-            className={clsx(classes.root, { [classes.rootOpen]: open })}
+            className={clsx(classes.root, {
+                [classes.rootDarkBg]: darkBg,
+                [classes.rootDarkBgOpen]: darkBg && open,
+                [classes.rootOpen]: open
+            })}
             component={motion.div}
             variants={variants}
             animate={animateVariant}
@@ -79,7 +89,6 @@ const NavbarSearch = ({ darkBg }) => {
             <IconButton onClick={handleToggle}>
                 <SearchIcon
                     className={clsx(classes.icon, {
-                        [classes.open]: open,
                         [classes.iconDarkBg]: darkBg
                     })}
                 />

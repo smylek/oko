@@ -9,8 +9,11 @@ import { motion } from 'framer-motion'
 import { HOMEPAGE_ANIMATION_TIME } from 'constans'
 
 const useStyles = makeStyles(theme => ({
-    darkBg: {
+    rootDarkBg: {
         color: theme.palette.common.white
+    },
+    linkActive: {
+        textDecoration: 'underline'
     }
 }))
 
@@ -33,7 +36,7 @@ const Navbar = ({ darkBg }) => {
             px={6}
             py={2}
             className={clsx({
-                [classes.darkBg]: darkBg
+                [classes.rootDarkBg]: darkBg
             })}
             component={motion.nav}
             variants={variants}
@@ -51,7 +54,9 @@ const Navbar = ({ darkBg }) => {
                     </Grid>
 
                     <Grid item>
-                        <Typography color="inherit" variant="h5" component={TransparentRouterLink} to="/shop">{t('shop')}</Typography>
+                        <Typography color="inherit" variant="h5" component={TransparentRouterLink} useNavLink to="/shop" activeClassName={classes.linkActive}>
+                            {t('shop')}
+                        </Typography>
                     </Grid>
 
                     <Grid item style={{ marginLeft: 'auto' }}>

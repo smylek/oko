@@ -1,5 +1,4 @@
 import { createMuiTheme, } from '@material-ui/core/styles';
-import { Link as RouterLink } from 'react-router-dom';
 import './assets/fonts/fonts.css'
 import TransparentRouterLink from 'components/TransparentRouterLink';
 
@@ -12,11 +11,15 @@ export const theme = (() => {
             h1: {
                 fontFamily: HEADER_FONT_FAMILY
             },
-            h2: {
-                fontFamily: HEADER_FONT_FAMILY
+            h2: { //nazwa w item detail
+                fontFamily: HEADER_FONT_FAMILY,
+                fontSize: 48,
+                lineHeight: '60px'
             },
-            h3: {
-                fontFamily: HEADER_FONT_FAMILY
+            h3: { // menu, cena w item detial
+                fontFamily: HEADER_FONT_FAMILY,
+                fontSize: 36,
+                lineHeight: '43px'
             },
             h4: {
                 fontFamily: HEADER_FONT_FAMILY
@@ -30,6 +33,14 @@ export const theme = (() => {
             button: {
                 fontFamily: HEADER_FONT_FAMILY
             },
+            subtitle1: {
+                // body 1 + header font
+                fontWeight: 400,
+                fontSize: "1rem",
+                lineHeight: 1.5,
+                letterSpacing: "0.00938em",
+                fontFamily: HEADER_FONT_FAMILY
+            }
         },
         overrides: {
             MuiCssBaseline: {
@@ -49,6 +60,9 @@ export const theme = (() => {
             },
             text: {
                 secondary: 'rgba(0, 0, 0, 0.6)'
+            },
+            error: {
+                main: '#A02525'
             }
         },
         props: {
@@ -67,6 +81,7 @@ export const theme = (() => {
     })
 
     t.overrides = {
+
         MuiButton: {
             contained: {
                 borderRadius: 50

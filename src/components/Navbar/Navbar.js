@@ -50,11 +50,11 @@ const Navbar = ({ darkBg }) => {
 
                 <Grid item container alignItems="center" spacing={4} md={9}>
                     <Grid item>
-                        <Typography color="inherit" variant="h5" component={TransparentRouterLink} to="/">{t('home')}</Typography>
+                        <Typography color="inherit" variant="h3" component={TransparentRouterLink} to="/">{t('home')}</Typography>
                     </Grid>
 
                     <Grid item>
-                        <Typography color="inherit" variant="h5" component={TransparentRouterLink} useNavLink to="/shop" activeClassName={classes.linkActive}>
+                        <Typography color="inherit" variant="h3" component={TransparentRouterLink} useNavLink to="/shop" activeClassName={classes.linkActive}>
                             {t('shop')}
                         </Typography>
                     </Grid>
@@ -67,7 +67,7 @@ const Navbar = ({ darkBg }) => {
                 <Grid item md={1}>
                     <Typography
                         color="inherit"
-                        variant="h5"
+                        variant="h3"
                         component={motion.p}
                     >
                         {t('bag')} 0

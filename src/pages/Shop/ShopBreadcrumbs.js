@@ -7,10 +7,10 @@ const ShopBreadcrumbs = ({ items }) => {
     return (
         <Breadcrumbs separator={<ArrowRightIcon color="action" fontSize="small" />}>
             {items.map(({ label, to }, index, arr) => arr.length - 1 === index ?
-                <Typography color="textSecondary">
+                <Typography color="textSecondary" key={to + label}>
                     {label}
                 </Typography> :
-                <Link to={to}>
+                <Link to={to} key={to + label}>
                     {label}
                 </Link>
             )}

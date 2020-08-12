@@ -49,9 +49,11 @@ const useStyles = makeStyles(theme => ({
 const variants = {
     open: {
         width: '600px',
+        transition: { type: 'spring', damping: 10, mass: .5 }
     },
     closed: {
         width: 'auto',
+        transition: { type: 'spring', damping: 10, mass: .1 }
     }
 }
 
@@ -75,6 +77,7 @@ const NavbarSearch = ({ darkBg }) => {
             component={motion.div}
             variants={variants}
             animate={animateVariant}
+
         >
             <Box flexGrow={1}>
                 <InputBase

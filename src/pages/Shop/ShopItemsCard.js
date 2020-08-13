@@ -17,15 +17,24 @@ const useStyles = makeStyles(theme => ({
     },
     compareAtPrice: {
         textDecoration: 'line-through'
+    },
+    image: {
+        position: 'absolute',
+        paddingBottom: '133.333333333%',
+        width: '100%'
+    },
+    imageSpaceHolder: {
+        paddingBottom: '133.333333333%',
+        width: '100%'
     }
 }))
 
 const imageVariants = {
     show: {
-
+        opacity: 1
     },
     hidden: {
-        
+        opacity: 0
     }
 }
 
@@ -63,9 +72,8 @@ const ShopItemsCard = ({ data }) => {
     >
         <Box flexGrow={1} display="flex" alignItems="center" position="relative" width="100%">
             <AnimatePresence exitBeforeEnter>
-                <Box style={{ paddingBottom: '133.333333333%', width: '100%' }}>
+                <Box className={classes.imageSpaceHolder} />
 
-                </Box>
                 <CardMedia
                     component={motion.img}
                     layoutId={`${data.handle}-product-image`}
@@ -73,24 +81,23 @@ const ShopItemsCard = ({ data }) => {
                     title={data.title}
                     key={productImageSrc}
                     variants={imageVariants}
-                    style={{ position: 'absolute', paddingBottom: '133.333333333%', width: '100%' }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    //exit={{ opacity: 0 }}
+                    className={classes.image}
+                    initial={"hidden"}
+                    animate={!hover ? "show" : "hidden"}
+                    exit={"show"}
                     transition={{ duration: .2 }}
                 />
                 <CardMedia
                     component={motion.img}
                     layoutId={`${data.handle}-model-image`}
-                    image={hover ? modelImageSrc : productImageSrc}
+                    image={modelImageSrc}
                     title={data.title}
                     key={modelImageSrc}
                     variants={imageVariants}
-
-                    style={{ position: 'absolute', paddingBottom: '133.333333333%', width: '100%' }}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    //exit={{ opacity: 0 }}
+                    className={classes.image}
+                    initial={"hidden"}
+                    animate={hover ? "show" : "hidden"}
+                    exit={"show"}
                     transition={{ duration: .2 }}
                 />
             </AnimatePresence>

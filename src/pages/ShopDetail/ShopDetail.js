@@ -253,6 +253,7 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
                                         title={data.title}
                                         key={productImageSrc.transformedSrc}
                                         className={classes.image}
+                                        animate={{ opacity: 1 }}
                                     />
                                 </AnimatePresence>
                             </Box>

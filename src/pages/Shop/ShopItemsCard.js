@@ -1,9 +1,10 @@
 import React from 'react'
 import { Box, Typography, CardMedia, makeStyles } from '@material-ui/core'
-import { motion, AnimatePresence, AnimateSharedLayout } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import get from 'lodash.get'
 import clsx from 'clsx';
 import TransparentRouterLink from 'components/TransparentRouterLink';
+import { shallowEqualObjects } from 'shallow-equal';
 
 
 const useStyles = makeStyles(theme => ({
@@ -18,6 +19,15 @@ const useStyles = makeStyles(theme => ({
         textDecoration: 'line-through'
     }
 }))
+
+const imageVariants = {
+    show: {
+
+    },
+    hidden: {
+        
+    }
+}
 
 const ShopItemsCard = ({ data }) => {
     const classes = useStyles()
@@ -53,13 +63,31 @@ const ShopItemsCard = ({ data }) => {
     >
         <Box flexGrow={1} display="flex" alignItems="center" position="relative" width="100%">
             <AnimatePresence exitBeforeEnter>
+                <Box style={{ paddingBottom: '133.333333333%', width: '100%' }}>
+
+                </Box>
                 <CardMedia
                     component={motion.img}
                     layoutId={`${data.handle}-product-image`}
+                    image={productImageSrc}
+                    title={data.title}
+                    key={productImageSrc}
+                    variants={imageVariants}
+                    style={{ position: 'absolute', paddingBottom: '133.333333333%', width: '100%' }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    //exit={{ opacity: 0 }}
+                    transition={{ duration: .2 }}
+                />
+                <CardMedia
+                    component={motion.img}
+                    layoutId={`${data.handle}-model-image`}
                     image={hover ? modelImageSrc : productImageSrc}
                     title={data.title}
-                    key={hover ? modelImageSrc : productImageSrc}
-                    style={{ paddingBottom: '133.333333333%', width: '100%' }}
+                    key={modelImageSrc}
+                    variants={imageVariants}
+
+                    style={{ position: 'absolute', paddingBottom: '133.333333333%', width: '100%' }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     //exit={{ opacity: 0 }}
@@ -92,4 +120,4 @@ const ShopItemsCard = ({ data }) => {
     </Box>
 }
 
-export default ShopItemsCard
+export default React.memo(ShopItemsCard, shallowEqualObjects)

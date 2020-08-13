@@ -3,6 +3,7 @@ import { Box, Grid, Typography, makeStyles } from '@material-ui/core'
 import { usePresence, motion, AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
 import clsx from 'clsx'
+import { shallowEqualObjects } from 'shallow-equal'
 
 const getVariant = level => {
     switch (level) {
@@ -94,4 +95,4 @@ const ShopSidebar = () => {
     )
 }
 
-export default ShopSidebar
+export default React.memo(ShopSidebar, shallowEqualObjects)

@@ -4,16 +4,18 @@ import Navbar from 'components/Navbar'
 import clsx from 'clsx'
 import { useLocation } from 'react-router-dom'
 import { HOMEPAGE_ANIMATION_TIME } from 'constans'
+import { shallowEqualObjects } from 'shallow-equal'
+import Footer from 'components/Footer'
 
 const useStyles = makeStyles(theme => ({
     root: {
         overflowX: 'hidden',
+        overflowY: 'hidden',
         backgroundColor: '#fff',
         transition: `background-color ${HOMEPAGE_ANIMATION_TIME}s`
     },
     fullPage: {
         overflowY: 'hidden',
-
     },
     darkBg: {
         backgroundColor: '#000'
@@ -48,8 +50,10 @@ const Layout = ({ children, className }) => {
             <Box position="relative" display="flex" flexDirection="column" flexGrow={1}>
                 {children}
             </Box>
+
+            {!isFullPageRoute && <Footer />}
         </Box>
     )
 }
 
-export default Layout
+export default React.memo(Layout, shallowEqualObjects)

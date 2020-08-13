@@ -2,8 +2,9 @@ import React from 'react'
 import { Box, Grid } from '@material-ui/core'
 import { gql, useQuery } from '@apollo/client'
 import ShopItemsCard from './ShopItemsCard';
+import { shallowEqualObjects } from 'shallow-equal';
 
-const LOAD_ITEMS = gql`
+export const LOAD_ITEMS = gql`
 query GetProducts {    
     products(first: 20) {
       edges {
@@ -45,7 +46,7 @@ query GetProducts {
               }
             }
           }
-          images(first: 10) {
+          images(first: 2) {
             edges {
               node {
                 id
@@ -66,7 +67,7 @@ query GetProducts {
 const ShopItems = () => {
   const { loading, error, data } = useQuery(LOAD_ITEMS);
 
-  if (loading) return <div>Loading...</div>
+  if (loading) return <div style={{ minHeight: '80vh' }}>Loading...</div>
 
   if (error) return <div>Error :(</div>
 
@@ -81,4 +82,4 @@ const ShopItems = () => {
   )
 }
 
-export default ShopItems
+export default React.memo(ShopItems, shallowEqualObjects)

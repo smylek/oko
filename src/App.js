@@ -9,6 +9,7 @@ import Layout from 'components/layouts/Layout';
 import { ApolloProvider } from '@apollo/client';
 import { client } from './client'
 import ShopDetail from 'pages/ShopDetail';
+import Page from 'pages/Page';
 
 
 function App() {
@@ -18,21 +19,26 @@ function App() {
         <CssBaseline />
 
         <React.Suspense fallback={<CircularProgress />}>
-          <BrowserRouter><AnimateSharedLayout>
-            <Layout>
-              <Route
-                render={({ location }) => (
-                  <AnimatePresence exitBeforeEnter>
-                    <Switch location={location} key={location.pathname}>
-                      <Route exact path='/shop/:slug' component={ShopDetail} />
-                      <Route exact path='/shop' component={Shop} />
-                      <Route exact path='/' component={Home} />
-                    </Switch>
-                  </AnimatePresence>
-                )}
-              />
-            </Layout>
-            </AnimateSharedLayout></BrowserRouter>
+          <BrowserRouter>
+            <AnimateSharedLayout>
+              <Layout>
+                <Route
+                  render={({ location }) => (
+                    <AnimatePresence exitBeforeEnter>
+                      <Switch location={location} key={location.pathname}>
+                        <Route exact path='/shop/:slug' component={ShopDetail} />
+                        <Route exact path='/shop' component={Shop} />
+                        <Route exact path='/privacy-policy' render={props => <Page keyName="privacyPolicyPage" {...props} />} />
+                        <Route exact path='/terms-of-use' render={props => <Page keyName="termsOfUsePage" {...props} />} />
+                        <Route exact path='/cookies' render={props => <Page keyName="cookiesPage" {...props} />} />
+                        <Route exact path='/' component={Home} />
+                      </Switch>
+                    </AnimatePresence>
+                  )}
+                />
+              </Layout>
+            </AnimateSharedLayout>
+          </BrowserRouter>
         </React.Suspense>
       </ThemeProvider>
     </ApolloProvider>

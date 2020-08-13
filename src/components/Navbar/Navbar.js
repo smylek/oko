@@ -25,16 +25,16 @@ const variants = {
 const duration = { duration: HOMEPAGE_ANIMATION_TIME }
 
 const Navbar = ({ darkBg }) => {
-    const classes = useStyles()
-    
+    const classes = useStyles()    
     const { t } = useTranslation();
-    console.log(t)
+
     return (
         <Box
             display="flex"
             alignItems="center"
             px={6}
-            py={2}
+            pb={6}
+            pt={4}
             className={clsx({
                 [classes.rootDarkBg]: darkBg
             })}
@@ -44,7 +44,7 @@ const Navbar = ({ darkBg }) => {
             transition={duration}
         >
             <Grid container alignItems="center" spacing={6}>
-                <Grid item md={2}>
+                <Grid item md={2} component={TransparentRouterLink} to="/">
                     <Logo color={darkBg ? "light" : "dark"} />
                 </Grid>
 

@@ -10,7 +10,7 @@ const resultSize = {
 }
 
 const style = {
-    y: '15vh',
+    y: '8vh',
     x: '50%',
     ...resultSize
 }

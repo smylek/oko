@@ -1,6 +1,7 @@
 import React from 'react'
 import { Breadcrumbs, Typography, Link } from '@material-ui/core'
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
+import { shallowEqualObjects } from 'shallow-equal';
 
 
 const ShopBreadcrumbs = ({ items }) => {
@@ -18,4 +19,4 @@ const ShopBreadcrumbs = ({ items }) => {
     )
 }
 
-export default ShopBreadcrumbs
+export default React.memo(ShopBreadcrumbs, shallowEqualObjects)

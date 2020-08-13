@@ -1,9 +1,29 @@
-@font-face {
+  @font-face {
     font-family: 'Quicksand';
     src: local('Quicksand'), url(./Quicksand-Bold.ttf) ;
   }
 
   @font-face {
     font-family: 'Raleway';
-    src: local('Raleway'), url(./Raleway-Medium.ttf) ;
+    src: local('Raleway'), url(./Raleway-Light.ttf);
+    font-weight: 300;
+  }
+
+  @font-face {
+    font-family: 'Raleway';
+    src: local('Raleway'), url(./Raleway-LightItalic.ttf);
+    font-weight: 300;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Raleway';
+    src: local('Raleway'), url(./Raleway-Medium.ttf);
+    font-weight: 500;
+  }
+
+  @font-face {
+    font-family: 'Raleway';
+    src: local('Raleway'), url(./Raleway-Black.ttf);
+    font-weight: 900;
   }

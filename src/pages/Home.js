@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { Box, Typography, makeStyles } from '@material-ui/core'
 import Button from 'components/Button'
 import AnimatedGigaLogo from 'components/AnimatedGigaLogo'
-import { motion, usePresence } from 'framer-motion'
+import { motion, usePresence, AnimatePresence } from 'framer-motion'
 import { HOMEPAGE_ANIMATION_TIME } from 'constans'
 import TransparentRouterLink from 'components/TransparentRouterLink'
 
@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
         maxHeight: '100vh',
         overflowY: 'hidden'
     },
-    button: {
+    buttonWrapper: {
         position: 'fixed',
         bottom: '38vh',
         left: '50%',
@@ -34,7 +34,7 @@ const Home = () => {
     const [isPresent, safeToRemove] = usePresence()
 
     React.useEffect(() => {
-       !isPresent && setTimeout(safeToRemove, HOMEPAGE_ANIMATION_TIME * 1000)
+        !isPresent && setTimeout(safeToRemove, HOMEPAGE_ANIMATION_TIME * 1000)
     }, [isPresent])
 
     return (<>
@@ -51,9 +51,13 @@ const Home = () => {
 
                 <Box mt={12} />
 
-                <Button color="primary-inversed" className={classes.button} component={TransparentRouterLink} to="/shop">
-                    {t("start")}
-                </Button>
+                <AnimatePresence>
+                    <Box component={motion.div} className={classes.buttonWrapper} exit={{ opacity: 0 }} transition={{ duration: .1 }}>
+                        <Button color="primary-inversed" component={TransparentRouterLink} to="/shop">
+                            {t("start")}
+                        </Button>
+                    </Box>
+                </AnimatePresence>
             </Box>
         </Box>
 

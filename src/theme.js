@@ -13,13 +13,13 @@ export const theme = (() => {
             },
             h2: { //nazwa w item detail
                 fontFamily: HEADER_FONT_FAMILY,
-                fontSize: 48,
-                lineHeight: '60px'
+                fontSize: 36,
+                lineHeight: '48px'
             },
             h3: { // menu, cena w item detial
                 fontFamily: HEADER_FONT_FAMILY,
-                fontSize: 36,
-                lineHeight: '43px'
+                fontSize: 24,
+                lineHeight: '31px'
             },
             h4: {
                 fontFamily: HEADER_FONT_FAMILY
@@ -31,12 +31,17 @@ export const theme = (() => {
                 fontFamily: HEADER_FONT_FAMILY
             },
             button: {
-                fontFamily: HEADER_FONT_FAMILY
+                fontFamily: HEADER_FONT_FAMILY,
+                fontSize: 18,
+                lineHeight: 1.5,
+            },
+            body1: {
+                fontSize: 18
             },
             subtitle1: {
                 // body 1 + header font
                 fontWeight: 400,
-                fontSize: "1rem",
+                fontSize: 18,
                 lineHeight: 1.5,
                 letterSpacing: "0.00938em",
                 fontFamily: HEADER_FONT_FAMILY
@@ -81,12 +86,31 @@ export const theme = (() => {
     })
 
     t.overrides = {
-
         MuiButton: {
             contained: {
-                borderRadius: 50
+                borderRadius: 50,
+            },
+            outlined: {
+                borderRadius: 50,
+            },
+            outlinedPrimary: {
+                borderWidth: 3,
+                borderColor: t.palette.primary.main,
+                '&:hover': {
+                    borderWidth: 3
+                }
             }
-        }
+        },
+        MuiInput: {
+            root: {
+                fontWeight: 900
+            },
+            underline: {
+                '&:before': {
+                    display: 'none'
+                }
+            }
+        },
     }
 
     return t

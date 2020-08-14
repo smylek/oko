@@ -1,11 +1,12 @@
 import React from 'react'
 import { Box, Grid } from '@material-ui/core'
-import { usePresence } from 'framer-motion'
+import { usePresence, motion } from 'framer-motion'
 import ShopSidebar from './ShopSidebar'
 import Breadcrumbs from 'components/Breadcrumbs'
 import { gql, useQuery } from '@apollo/client'
 import ShopItems from './ShopItems'
 import { shallowEqualObjects as shallowEqual } from "shallow-equal";
+import deepEqual from 'fast-deep-equal/react'
 
 const LOAD_COLLECTIONS = gql`
   query GetCollections {    
@@ -65,4 +66,4 @@ const Shop = () => {
     )
 }
 
-export default React.memo(Shop, shallowEqual)
+export default React.memo(Shop, deepEqual)

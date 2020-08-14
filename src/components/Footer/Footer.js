@@ -25,6 +25,8 @@ const socials = [
 const Footer = () => {
     const { t } = useTranslation()
 
+    const footerPages = t('pages', { returnObjects: true }).filter(x => x.showInFooter)
+
     return (
         <Box px={6} pt={6} pb={4}>
             <Grid container>
@@ -55,23 +57,11 @@ const Footer = () => {
                     <Logo />
 
                     <Box display="flex" alignItems="center" mt={6}>
-                        <Box mr={2} component={TransparentRouterLink} to="/cookies">
+                        {footerPages.map(x => <Box key={x.slug} mr={2} component={TransparentRouterLink} to={`/pages/${x.slug}`}>
                             <Box component="span" color="text.secondary">
-                                {t('cookies')}
+                                {x.title}
                             </Box>
-                        </Box>
-
-                        <Box mr={2} component={TransparentRouterLink} to="/privacy-policy">
-                            <Box component="span" color="text.secondary">
-                                {t('privacyPolicy')}
-                            </Box>
-                        </Box>
-
-                        <Box component={TransparentRouterLink} to="/terms-of-use">
-                            <Box component="span" color="text.secondary">
-                                {t('termsOfUse')}
-                            </Box>
-                        </Box>
+                        </Box>)}
                     </Box>
                 </Grid>
             </Grid>

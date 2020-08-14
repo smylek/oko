@@ -4,5 +4,62 @@
     "heroText": "Best quality clothing from Poland.",
     "footerParagraph": "Start your journey deep into your soul. Start your journey deep into your soul. Start your journey deep into your soul. Start your journey deep into your soul.",
     "footerFollowUs": "Follow us",
-    "privacyPolicyPage": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras et neque id enim malesuada ornare ac sed ligula. In pretium mi non magna vulputate eleifend. Cras finibus vehicula tellus, quis volutpat libero congue a. Aenean ac neque ut augue vestibulum pretium nec nec nibh. Donec ultrices tortor id nunc bibendum, ut rutrum dolor cursus. Cras finibus dictum consequat. In hac habitasse platea dictumst. Maecenas sagittis, odio at pellentesque iaculis, libero velit tempus nisl, quis vulputate mi augue eu est. Donec nibh risus, accumsan ac mattis posuere, mollis nec quam. Nulla facilisi. Sed rutrum justo diam, sed ullamcorper leo tristique eu. Nam suscipit consequat porta. Suspendisse potenti. Cras fringilla, elit id lobortis iaculis, justo tellus cursus sapien, eu malesuada est enim at augue. Ut nec dolor facilisis, vestibulum elit tincidunt, euismod nisi. Sed euismod sit amet erat sed pharetra. "
+    "pages": [
+        {
+            "slug": "privacy-policy",
+            "title": "Privacy Policy",
+            "showInFooter": true,
+            "bodyDecorator": "left",
+            "body": "# Raz dwa trzy body"
+        },
+        {
+            "slug": "cookies",
+            "title": "Cookies",
+            "showInFooter": true,
+            "bodyDecorator": "right",
+            "body": "# Cookies"
+        },
+        {
+            "slug": "terms-of-use",
+            "title": "Terms of use",
+            "showInFooter": true,
+            "bodyDecorator": null,
+            "body": "# Terms of use"
+        }
+    ],
+    "pagesMenu": [
+        {
+            "title": "Help",
+            "level": 0
+        },
+        {
+            "title": "About",
+            "to": "/pages/about",
+            "level": 1
+        },
+        {
+            "title": "Customer Service",
+            "to": "/pages/customer-service",
+            "level": 1
+        },
+        {
+            "title": "Policies",
+            "level": 0
+        },
+        {
+            "title": "Privacy Policy",
+            "to": "/pages/privacy-policy",
+            "level": 1
+        },
+        {
+            "title": "Cookies",
+            "to": "/pages/cookies",
+            "level": 1
+        },
+        {
+            "title": "Terms of use",
+            "to": "/pages/terms-of-use",
+            "level": 1
+        }
+    ]
 }

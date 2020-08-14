@@ -7,6 +7,7 @@ import clsx from 'clsx'
 import NavbarSearch from './NavbarSearch'
 import { motion } from 'framer-motion'
 import { HOMEPAGE_ANIMATION_TIME } from 'constans'
+import { shallowEqualObjects } from 'shallow-equal'
 
 const useStyles = makeStyles(theme => ({
     rootDarkBg: {
@@ -25,7 +26,7 @@ const variants = {
 const duration = { duration: HOMEPAGE_ANIMATION_TIME }
 
 const Navbar = ({ darkBg }) => {
-    const classes = useStyles()    
+    const classes = useStyles()
     const { t } = useTranslation();
 
     return (
@@ -65,17 +66,21 @@ const Navbar = ({ darkBg }) => {
                 </Grid>
 
                 <Grid item md={1}>
-                    <Typography
-                        color="inherit"
-                        variant="h3"
-                        component={motion.p}
-                    >
-                        {t('bag')} 0
-                    </Typography>
+                    <Box position="relative">
+                        <Box component={motion.div} style={{ position: 'fixed', transform: 'translateY(-50%)' }}>
+                            <Typography
+                                color="inherit"
+                                variant="h3"
+                                component={motion.p}
+                            >
+                                {t('bag')} 0
+                        </Typography>
+                        </Box>
+                    </Box>
                 </Grid>
             </Grid>
         </Box>
     )
 }
 
-export default Navbar
+export default React.memo(Navbar, shallowEqualObjects)

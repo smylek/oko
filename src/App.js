@@ -10,6 +10,7 @@ import { ApolloProvider } from '@apollo/client';
 import { client } from './client'
 import ShopDetail from 'pages/ShopDetail';
 import Page from 'pages/Page';
+import RouteChangeEffect from 'RouteChangeEffect';
 
 
 function App() {
@@ -20,6 +21,8 @@ function App() {
 
         <React.Suspense fallback={<CircularProgress />}>
           <BrowserRouter>
+            <RouteChangeEffect />
+
             <AnimateSharedLayout>
               <Layout>
                 <Route
@@ -28,9 +31,7 @@ function App() {
                       <Switch location={location} key={location.pathname}>
                         <Route exact path='/shop/:slug' component={ShopDetail} />
                         <Route exact path='/shop' component={Shop} />
-                        <Route exact path='/privacy-policy' render={props => <Page keyName="privacyPolicyPage" {...props} />} />
-                        <Route exact path='/terms-of-use' render={props => <Page keyName="termsOfUsePage" {...props} />} />
-                        <Route exact path='/cookies' render={props => <Page keyName="cookiesPage" {...props} />} />
+                        <Route exact path='/pages/:slug' component={Page} />
                         <Route exact path='/' component={Home} />
                       </Switch>
                     </AnimatePresence>

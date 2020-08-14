@@ -8,6 +8,7 @@ import clsx from 'clsx';
 import { LOAD_ITEMS } from '../Shop/ShopItems';
 import { useTranslation } from 'react-i18next';
 import ShopDetailImages from './ShopDetailImages';
+import deepEqual from 'fast-deep-equal/react'
 
 const LOAD_ITEM_DETAIL = gql`
 query GetProduct($slug: String!) {
@@ -51,7 +52,7 @@ query GetProduct($slug: String!) {
                   }
                 }
               }
-              images(first: 2) {
+              images(first: 15) {
                 edges {
                   node {
                     id
@@ -310,4 +311,4 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
     )
 }
 
-export default ShopDetail
+export default React.memo(ShopDetail, deepEqual)

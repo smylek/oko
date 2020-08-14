@@ -1,42 +1,7 @@
 import React from 'react'
-import { Box, Grid, Typography, makeStyles } from '@material-ui/core'
-import { usePresence, motion, AnimatePresence } from 'framer-motion'
 import { useTranslation } from 'react-i18next'
-import clsx from 'clsx'
 import { shallowEqualObjects } from 'shallow-equal'
-
-const getVariant = level => {
-    switch (level) {
-        case 0:
-            return 'subtitle2'
-        case 1:
-            return 'body1'
-        default:
-            return 'body1'
-    }
-}
-
-const useStyles = makeStyles(theme => ({
-    uppercase: {
-        textTransform: 'uppercase'
-    },
-}))
-
-const ShopSidebarItem = ({ children, level = 0 }) => {
-    const classes = useStyles()
-
-    return <Box pl={level * 2} py={.25}>
-        <Typography
-            variant={getVariant(level)}
-            className={clsx({
-                [classes.uppercase]: level === 0
-            })}
-        >
-            {children}
-        </Typography>
-    </Box>
-}
-
+import Sidebar from 'components/Sidebar'
 
 const ShopSidebar = () => {
     const [t] = useTranslation()
@@ -70,27 +35,30 @@ const ShopSidebar = () => {
             label: t('colorless'),
             value: 'COLORLESS'
         },
+    ], []) 
+
+    const sidebarItems = React.useMemo(() => [
+        {
+            level: 0,
+            title: 'Category'
+        },
+        {
+            level: 1,
+            title: 'Clothing'
+        },
+        {
+            level: 1,
+            title: 'T-shirts'
+        },
+        {
+            level: 0,
+            title: 'Colors'
+        },
+        ...colors.map(x => ({ level: 1, title: x.label}))
     ], [])
 
     return (
-        <AnimatePresence>
-            <Box
-                component={motion.div}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-            >
-                <ShopSidebarItem>Category</ShopSidebarItem>
-                <ShopSidebarItem level={1}>Clothing</ShopSidebarItem>
-                <ShopSidebarItem level={2}>T-shirts</ShopSidebarItem>
-
-                <Box mt={1} />
-
-                <ShopSidebarItem>Color</ShopSidebarItem>
-                {colors.map(({ label, value }) => <ShopSidebarItem key={value} level={2}>{label}</ShopSidebarItem>)}
-
-            </Box>
-        </AnimatePresence>
+        <Sidebar items={sidebarItems} />
 
     )
 }

@@ -3,6 +3,7 @@ import { ReactComponent as LogoSvg } from 'assets/images/logo.svg';
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core';
 import { HOMEPAGE_ANIMATION_TIME } from 'constans';
+import deepEqual from 'fast-deep-equal/react'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -46,4 +47,6 @@ Logo.defaultProps = {
     size: 'medium'
 }
 
-export default Logo
+Logo.whyDidYouRender = true
+
+export default React.memo(Logo, deepEqual)

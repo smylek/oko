@@ -17,20 +17,30 @@ const getVariant = level => {
 }
 
 const useStyles = makeStyles(theme => ({
+    hoverable: {
+        cursor: 'pointer'
+    },
+    selected: {
+        fontWeight: 900
+    },
     uppercase: {
         textTransform: 'uppercase'
     },
 }))
 
-const SidebarItem = ({ children, level = 0, to }) => {
+const SidebarItem = ({ children, level = 0, to, isSelected, onClick }) => {
     const classes = useStyles()
 
     const props = to ? { to, component: TransparentRouterLink } : {}
 
-    return <Box pl={level * 2} py={.25}>
+    console.log({ isSelected, x: isSelected && isSelected() })
+
+    return <Box pl={level * 2} py={.25} onClick={onClick}>
         <Typography
             variant={getVariant(level)}
             className={clsx({
+                [classes.hoverable]: to || onClick,
+                [classes.selected]: isSelected && isSelected(),
                 [classes.uppercase]: level === 0
             })}
             {...props}
@@ -50,7 +60,15 @@ const Sidebar = ({ items }) => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
             >
-                {items.map(({ title, level, to }) => <SidebarItem key={title} level={level} to={to}>{title}</SidebarItem>)}
+                {items.map(({ title, level, to, onClick, isSelected }) => <SidebarItem
+                    key={title}
+                    level={level}
+                    to={to}
+                    onClick={onClick}
+                    isSelected={isSelected}
+                >
+                    {title}
+                </SidebarItem>)}
 
             </Box>
         </AnimatePresence>

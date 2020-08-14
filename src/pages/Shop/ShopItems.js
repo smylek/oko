@@ -3,10 +3,11 @@ import { Box, Grid } from '@material-ui/core'
 import { gql, useQuery } from '@apollo/client'
 import ShopItemsCard from './ShopItemsCard';
 import { shallowEqualObjects } from 'shallow-equal';
+import get from 'lodash.get';
 
 export const LOAD_ITEMS = gql`
-query GetProducts {    
-    products(first: 20) {
+query GetProducts($query: String) {    
+    products(first: 20, query: $query) {
       edges {
         node {
           id
@@ -62,15 +63,27 @@ query GetProducts {
   }  
 `;
 
+const computeQuery = filter => {
+  const producType = get(filter, 'productType')
+  const colors = get(filter, 'productType')
 
+  return `product_type:${producType}`
+}
 
-const ShopItems = () => {
-  const { loading, error, data } = useQuery(LOAD_ITEMS);
+const ShopItems = ({ filter }) => {
+  const query = computeQuery(filter)
+  const { loading, error, data, refetch } = useQuery(LOAD_ITEMS);
+
+  React.useEffect(() => {
+    !loading && refetch({ query })
+  }, [filter,])
 
   if (loading) return <div style={{ minHeight: '80vh' }}>Loading...</div>
 
   if (error) return <div>Error :(</div>
 
+  console.log({ query, filter })
+  //  "product_type:T-shirts")
   return (
     <Box>
       <Grid container spacing={2}>

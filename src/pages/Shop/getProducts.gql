@@ -1,0 +1,55 @@
+query GetProducts {    
+    products(first: 20, query: $query) {
+      edges {
+        node {
+          id
+          handle
+          title          
+          priceRange {
+            minVariantPrice {
+              currencyCode
+              amount
+            }
+            maxVariantPrice {
+              currencyCode
+              amount
+            }
+          }
+          presentmentPriceRanges(first: 1) {
+            edges {
+              node{
+                minVariantPrice {
+                    currencyCode
+                    amount
+                }
+                maxVariantPrice {
+                    currencyCode
+                    amount
+                }                
+              }
+            }            
+          }
+          variants(first: 1) {
+            edges {
+              node {
+                compareAtPriceV2 {
+                  amount
+                  currencyCode
+                }
+              }
+            }
+          }
+          images(first: 2) {
+            edges {
+              node {
+                id
+                originalSrc
+                transformedSrc
+                altText
+              }
+            }
+          }
+        }
+      }
+    }        
+  }  

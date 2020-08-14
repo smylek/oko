@@ -27,6 +27,7 @@ const LOAD_COLLECTIONS = gql`
 const Shop = () => {
     const [isPresent, safeToRemove] = usePresence()
     const { loading, error, data } = useQuery(LOAD_COLLECTIONS);
+    const [filter, setFilter] = React.useState({ colors: [], productType: '' })
 
     React.useEffect(() => {
         !isPresent && safeToRemove()
@@ -49,7 +50,7 @@ const Shop = () => {
         <Box px={7} flexWrap="nowrap">
             <Grid container>
                 <Grid item md={2}>
-                    <ShopSidebar />
+                    <ShopSidebar filter={filter} onFilterChange={setFilter} />
                 </Grid>
                 <Grid item md={9} container spacing={2}>
                     <Grid item xs={12}>
@@ -57,7 +58,7 @@ const Shop = () => {
                     </Grid>
 
                     <Grid item xs={12}>
-                        <ShopItems />
+                        <ShopItems filter={filter} />
                     </Grid>
                 </Grid>
                 <Grid item md={1}></Grid>

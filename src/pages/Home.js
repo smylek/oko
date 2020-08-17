@@ -17,7 +17,8 @@ const useStyles = makeStyles(theme => ({
         position: 'fixed',
         bottom: '38vh',
         left: '50%',
-        transform: 'translateX(-50%)'
+        transform: 'translateX(-50%)',
+        transition: 'opacity .3s',
     }
 }))
 
@@ -52,7 +53,13 @@ const Home = () => {
                 <Box mt={12} />
 
                 <AnimatePresence>
-                    <Box component={motion.div} className={classes.buttonWrapper} exit={{ opacity: 0 }} transition={{ duration: .1 }}>
+                    <Box
+                        component={motion.div}
+                        className={classes.buttonWrapper}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0, scale: .1 }}
+                    >
                         <Button color="primary-inversed" component={TransparentRouterLink} to="/shop">
                             {t("start")}
                         </Button>

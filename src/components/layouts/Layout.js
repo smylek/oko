@@ -45,20 +45,23 @@ const Layout = ({ children, className }) => {
 
     return (
         <Scrollbars style={scrollbarStle}>
-        <Box display="flex" flexDirection="column" minHeight="100vh" maxWidth="100%" className={clsx(classes.root, {
-            [classes.darkBg]: darkBg,
-            [classes.fullPage]: isFullPageRoute,
-        }, className)}>
-            <Navbar {...{ darkBg }} />
+            <Box display="flex" flexDirection="column" minHeight="100vh" maxWidth="100%" className={clsx(classes.root, {
+                [classes.darkBg]: darkBg,
+                [classes.fullPage]: isFullPageRoute,
+            }, className)}>
+                <Navbar {...{ darkBg }} />
 
-            <Box position="relative" display="flex" flexDirection="column" flexGrow={1}>
-                {children}
+                <Box position="relative" display="flex" flexDirection="column" flexGrow={1}>
+                    {children}
+                </Box>
+
+                {!isFullPageRoute && <Footer />}
             </Box>
-
-            {!isFullPageRoute && <Footer />}
-        </Box>
         </Scrollbars>
     )
 }
 
-export default React.memo(Layout, shallowEqualObjects)
+export default React.memo(Layout, ({ history, location = {}, match, ...a }, { history: historyB, location: locationB = {}, match: matchB, ...b }) => {
+    if (location.key !== locationB.key) return false
+    return true
+})

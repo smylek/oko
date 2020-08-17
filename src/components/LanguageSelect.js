@@ -4,6 +4,8 @@ import { Select, MenuItem } from '@material-ui/core'
 import { LANGUAGES } from 'constans'
 import { shallowEqualObjects } from 'shallow-equal'
 
+
+
 const LanguageSelect = () => {
     const { i18n } = useTranslation()
 
@@ -11,7 +13,7 @@ const LanguageSelect = () => {
         i18n.changeLanguage(e.target.value)
     }, [])
 
-    return (
+    return (        
         <Select
             id="language-select-id"
             value={i18n.language}

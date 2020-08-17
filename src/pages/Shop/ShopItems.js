@@ -3,7 +3,6 @@ import { Box, Grid } from '@material-ui/core'
 import { gql, useQuery } from '@apollo/client'
 import ShopItemsCard from './ShopItemsCard';
 import { shallowEqualObjects } from 'shallow-equal';
-import get from 'lodash.get';
 
 export const LOAD_ITEMS = gql`
 query GetProducts($query: String) {    

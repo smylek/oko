@@ -13,6 +13,8 @@ import Page from 'pages/Page';
 import RouteChangeEffect from 'RouteChangeEffect';
 import Cart from 'components/Cart';
 import Client from 'shopify-buy'
+//import { getCookie, setCookie } from 'utils/cookies';
+//import { defaultTo } from 'utils/functions';
 
 export const shopifyClient = Client.buildClient({
   domain: process.env.REACT_APP_SHOP_URI,
@@ -25,9 +27,10 @@ function App() {
   const [isCartOpen, setIsCartOpen] = React.useState(false)
   const [checkout, setCheckout] = React.useState({ lineItems: [] })
 
-  React.useEffect(() => {
+  React.useEffect(() => {    
     shopifyClient.checkout.create().then((res) => {
-      setCheckout(res)
+      //const lineItems = getCookie(process.env.REACT_APP_CHECKOUT_COOKIE_NAME)      
+      setCheckout(res) // ? {...res, lineItems} : res)
     });
   }, [])
 
@@ -42,7 +45,8 @@ function App() {
     const checkoutId = checkout.id
 
     return shopifyClient.checkout.addLineItems(checkoutId, lineItemsToAdd).then(res => {
-      setCheckout(res);
+      setCheckout(res);      
+      //setCookie(process.env.REACT_APP_CHECKOUT_COOKIE_NAME, res.variableValues.lineItems)
     });
   }, [checkout, setCheckout])
 
@@ -52,6 +56,7 @@ function App() {
 
     return shopifyClient.checkout.updateLineItems(checkoutId, lineItemsToUpdate).then(res => {
       setCheckout(res);
+      //setCookie(process.env.REACT_APP_CHECKOUT_COOKIE_NAME, res.variableValues.lineItems)
     });
   }, [checkout, setCheckout])
 
@@ -60,6 +65,7 @@ function App() {
 
     return shopifyClient.checkout.removeLineItems(checkoutId, [lineItemId]).then(res => {
       setCheckout(res);
+      //setCookie(process.env.REACT_APP_CHECKOUT_COOKIE_NAME, res.variableValues.lineItems)
     });
   }, [checkout, setCheckout])
 

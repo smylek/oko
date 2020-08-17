@@ -4,8 +4,25 @@ import TransparentRouterLink from 'components/TransparentRouterLink';
 
 const HEADER_FONT_FAMILY = 'Quicksand, Helvetica, "serif"'
 
-export const theme = (() => {
+export const createTheme = (({ dark = false } = {}) => {
     const t = createMuiTheme({
+        palette: {
+            type: dark ? 'dark' : 'light',
+            primary: {
+                main: '#000',
+                contrastText: '#fff'
+            },
+            background: {
+                default: '#fff',
+                //paper: '#FAFAFA'
+            },
+            text: {
+                secondary: 'rgba(0, 0, 0, 0.6)'
+            },
+            error: {
+                main: '#A02525'
+            }
+        },
         typography: {
             fontFamily: 'Raleway, Helvetica, Arial, "sans-serif"',
             h1: {
@@ -54,22 +71,6 @@ export const theme = (() => {
                 },
             },
         },
-        palette: {
-            primary: {
-                main: '#000',
-                contrastText: '#fff'
-            },
-            background: {
-                default: '#fff',
-                //paper: '#FAFAFA'
-            },
-            text: {
-                secondary: 'rgba(0, 0, 0, 0.6)'
-            },
-            error: {
-                main: '#A02525'
-            }
-        },
         props: {
             MuiLink: {
                 underline: 'none',
@@ -111,7 +112,16 @@ export const theme = (() => {
                 }
             }
         },
+        MuiSelect: {
+            root: {
+                paddingTop: 6,
+                paddingBottom: 4
+            }
+        }
     }
 
     return t
-})()
+})
+
+
+export const theme = createTheme()

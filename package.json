@@ -20,11 +20,14 @@
     "lodash.get": "^4.4.2",
     "markdown-to-jsx": "^6.11.4",
     "react": "^16.13.1",
+    "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^16.13.1",
     "react-i18next": "^11.7.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
-    "shallow-equal": "^1.2.1"
+    "react-tilt": "^0.1.4",
+    "shallow-equal": "^1.2.1",
+    "shopify-buy": "^2.11.0"
   },
   "scripts": {
     "start": "react-scripts start",

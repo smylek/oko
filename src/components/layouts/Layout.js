@@ -6,6 +6,7 @@ import { useLocation } from 'react-router-dom'
 import { HOMEPAGE_ANIMATION_TIME } from 'constans'
 import { shallowEqualObjects } from 'shallow-equal'
 import Footer from 'components/Footer'
+import Scrollbars from 'react-custom-scrollbars'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,6 +34,8 @@ const shouldUseFullPage = path => {
     return fullPageRoutes.some(x => x === path)
 }
 
+const scrollbarStle = { width: '100%', height: '100vh' }
+
 const Layout = ({ children, className }) => {
     const classes = useStyles()
     const location = useLocation()
@@ -41,6 +44,7 @@ const Layout = ({ children, className }) => {
     const isFullPageRoute = React.useMemo(() => shouldUseFullPage(location.pathname), [location.pathname])
 
     return (
+        <Scrollbars style={scrollbarStle}>
         <Box display="flex" flexDirection="column" minHeight="100vh" maxWidth="100%" className={clsx(classes.root, {
             [classes.darkBg]: darkBg,
             [classes.fullPage]: isFullPageRoute,
@@ -53,6 +57,7 @@ const Layout = ({ children, className }) => {
 
             {!isFullPageRoute && <Footer />}
         </Box>
+        </Scrollbars>
     )
 }
 

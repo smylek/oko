@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Box, makeStyles, Typography } from '@material-ui/core'
 import clsx from 'clsx'
 import TransparentRouterLink from './TransparentRouterLink'
+import { shallowEqualObjects } from 'shallow-equal'
 
 
 const getVariant = level => {
@@ -28,12 +29,10 @@ const useStyles = makeStyles(theme => ({
     },
 }))
 
-const SidebarItem = ({ children, level = 0, to, isSelected, onClick }) => {
+const SidebarItem = React.memo(({ children, level = 0, to, isSelected, onClick }) => {
     const classes = useStyles()
 
     const props = to ? { to, component: TransparentRouterLink } : {}
-
-    console.log({ isSelected, x: isSelected && isSelected() })
 
     return <Box pl={level * 2} py={.25} onClick={onClick}>
         <Typography
@@ -48,7 +47,7 @@ const SidebarItem = ({ children, level = 0, to, isSelected, onClick }) => {
             {children}
         </Typography>
     </Box>
-}
+}, shallowEqualObjects)
 
 
 const Sidebar = ({ items }) => {
@@ -75,4 +74,4 @@ const Sidebar = ({ items }) => {
     )
 }
 
-export default Sidebar
+export default React.memo(Sidebar, shallowEqualObjects)

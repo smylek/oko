@@ -64,10 +64,13 @@ query GetProducts($query: String) {
 `;
 
 const computeQuery = filter => {
-  const producType = get(filter, 'productType')
-  const colors = get(filter, 'productType')
+  let result = []
 
-  return `product_type:${producType}`
+  for (const namespace in filter) {
+    result.push(`(${filter[namespace].map(x => `tag:${x}`).join(' OR ')})`)
+  }
+
+  return result.join(' AND ')
 }
 
 const ShopItems = ({ filter }) => {
@@ -82,10 +85,8 @@ const ShopItems = ({ filter }) => {
 
   if (error) return <div>Error :(</div>
 
-  console.log({ query, filter })
-  //  "product_type:T-shirts")
   return (
-    <Box>
+    <Box style={{ minHeight: '80vh' }}>
       <Grid container spacing={2}>
         {data.products.edges.map(({ node: item }) => <Grid key={item.id} item xs={12} sm={6} md={4} xl={3}>
           <ShopItemsCard data={item} />

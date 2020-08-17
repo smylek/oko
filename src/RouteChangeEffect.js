@@ -1,9 +1,10 @@
 import React from 'react'
 import { withRouter } from 'react-router'
+import get from 'lodash.get'
 
 class RouteChangeEffect extends React.Component {
     componentWillReceiveProps(nextProps) {
-        if (this.props.location.pathname !== nextProps.location.pathname) {
+        if (get(this.props, 'location.pathname') !== get(nextProps, 'location.pathname')) {
             window.scrollTo(0)
         }
     }

@@ -4,6 +4,7 @@
     "heroText": "Best quality clothing from Poland.",
     "footerParagraph": "Start your journey deep into your soul. Start your journey deep into your soul. Start your journey deep into your soul. Start your journey deep into your soul.",
     "footerFollowUs": "Follow us",
+    "quanity": "Quanity",
     "pages": [
         {
             "slug": "privacy-policy",
@@ -59,6 +60,68 @@
         {
             "title": "Terms of use",
             "to": "/pages/terms-of-use",
+            "level": 1
+        }
+    ],
+    "shopMenu": [
+        {
+            "title": "Category",
+            "level": 0
+        },
+        {
+            "title": "Clothing",
+            "level": 1
+        },
+        {
+            "title": "T-shirts",
+            "value": "TSHIRTS",
+            "namespace": "categories",
+            "level": 2
+        },
+        {
+            "title": "Shoes",
+            "value": "SHOES",
+            "namespace": "categories",
+            "level": 2
+        },
+        {
+            "title": "Colors",
+            "level": 0
+        },
+        {
+            "title": "White",
+            "value": "WHITE",
+            "namespace": "color",
+            "level": 1
+        },
+        {
+            "title": "Blue",
+            "value": "BLUE",
+            "namespace": "color",
+            "level": 1
+        },
+        {
+            "title": "Black",
+            "value": "BLACK",
+            "namespace": "color",
+            "level": 1
+        },
+        {
+            "title": "Green",
+            "value": "GREEN",
+            "namespace": "color",
+            "level": 1
+        },
+        {
+            "title": "Multicolor",
+            "value": "MULTICOLOR",
+            "namespace": "color",
+            "level": 1
+        },
+        {
+            "title": "Colorless",
+            "value": "COLORLESS",
+            "namespace": "color",
             "level": 1
         }
     ]

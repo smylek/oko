@@ -2,76 +2,32 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { shallowEqualObjects } from 'shallow-equal'
 import Sidebar from 'components/Sidebar'
+import get from 'lodash.get'
 
 const ShopSidebar = ({ filter, onFilterChange }) => {
     const [t] = useTranslation()
 
     const handleChange = React.useCallback(nextState => onFilterChange(nextState), [])
 
-    const colors = React.useMemo(() => [
-        {
-            label: t('white'),
-            value: 'WHITE'
-        },
-        {
-            label: t('blue'),
-            value: 'BLUE'
-        },
-        {
-            label: t('black'),
-            value: 'BLACK'
-        },
-        {
-            label: t('red'),
-            value: 'RED'
-        },
-        {
-            label: t('green'),
-            value: 'GREEN'
-        },
-        {
-            label: t('multicolor'),
-            value: 'MULTICOLOR'
-        },
-        {
-            label: t('colorless'),
-            value: 'COLORLESS'
-        },
-    ], [])
+    const sidebarItems = React.useMemo(() => t('shopMenu', { returnObjects: true }).map(x => {
+        const _filter = Array.isArray(filter[x.namespace]) ? filter : { ...filter, [x.namespace]: [] }
 
-    const sidebarItems = React.useMemo(() => [
-        {
-            level: 0,
-            title: 'Category',
-        },
-        {
-            level: 1,
-            title: 'Clothing',
-            onClick: () => handleChange({ ...filter, productType: 'Clothing' }),
-            isSelected: () => filter.productType === 'Clothing'
-        },
-        {
-            level: 1,
-            title: 'T-shirts',
-            onClick: () => handleChange({ ...filter, productType: 'T-shirts' }),
-            isSelected: () => filter.productType === 'T-shirts'
-        },
-        {
-            level: 0,
-            title: 'Colors',
-        },
-        ...colors.map(x => ({
-            level: 1,
-            title: x.label,
+        const computed = x.namespace && x.value !== undefined ? {
             onClick: () => handleChange({
-                ...filter,
-                colors: filter.colors.includes(x.value) ?
-                    filter.colors.filter(y => y === x.value) :
-                    [...filter.colors, x.value]
+                ..._filter,
+                [x.namespace]: get(_filter, x.namespace, []).includes(x.value) ?
+                    get(_filter, x.namespace, []).filter(y => y !== x.value) :
+                    [...get(_filter, x.namespace, []), x.value]
             }),
-            isSelected: () => filter.colors.includes(x.value)
-        }))
-    ], [filter,])
+            isSelected: () => get(_filter, x.namespace, []).includes(x.value)
+        } : {}
+
+        return ({
+            level: x.level,
+            title: x.title,
+            ...computed
+        })
+    }), [filter,])
 
     return (
         <Sidebar items={sidebarItems} />

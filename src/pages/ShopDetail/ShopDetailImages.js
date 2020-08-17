@@ -63,7 +63,7 @@ const ShopDetailImages = ({ layoutIdForFirstImage, items }) => {
 
             <Box position="absolute" right={`calc(100% + ${theme.spacing(2)}px)`} top={0} zIndex={5} width={'22%'} maxWidth={104} display="flex" flexDirection="column">
                 <Grid container spacing={2}>
-                    {items.map(({ transformedSrc, altText = '' }, index) => <Grid item xs={12}>
+                    {items.map(({ transformedSrc, altText = '' }, index) => <Grid item xs={12} key={transformedSrc + index}>
                         <CardMedia
                             component={motion.img}
                             image={transformedSrc}

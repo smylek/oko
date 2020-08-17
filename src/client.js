@@ -3,7 +3,7 @@ import { ApolloClient, InMemoryCache } from '@apollo/client';
 import { createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
-const httpLink = createHttpLink({ uri: process.env.REACT_APP_SHOP_URI })
+const httpLink = createHttpLink({ uri: `https://${ process.env.REACT_APP_SHOP_URI}/api/graphql` })
 
 const middlewareLink = setContext(() => ({
   headers: {

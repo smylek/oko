@@ -8,6 +8,9 @@ import NavbarSearch from './NavbarSearch'
 import { motion } from 'framer-motion'
 import { HOMEPAGE_ANIMATION_TIME } from 'constans'
 import { shallowEqualObjects } from 'shallow-equal'
+import LanguageSelect from 'components/LanguageSelect'
+import { BuyButtonContext } from 'App'
+import get from 'lodash.get'
 
 const useStyles = makeStyles(theme => ({
     rootDarkBg: {
@@ -15,7 +18,9 @@ const useStyles = makeStyles(theme => ({
     },
     linkActive: {
         textDecoration: 'underline'
-    }
+    },
+    bagButtonWrapper: { position: 'fixed', transform: 'translateY(-50%)' },
+    bagButton: {cursor: 'pointer'}
 }))
 
 const variants = {
@@ -28,6 +33,7 @@ const duration = { duration: HOMEPAGE_ANIMATION_TIME }
 const Navbar = ({ darkBg }) => {
     const classes = useStyles()
     const { t } = useTranslation();
+    const { checkout, handleCartOpen } = React.useContext(BuyButtonContext)
 
     return (
         <Box
@@ -45,8 +51,11 @@ const Navbar = ({ darkBg }) => {
             transition={duration}
         >
             <Grid container alignItems="center" spacing={6}>
-                <Grid item md={2} component={TransparentRouterLink} to="/">
-                    <Logo color={darkBg ? "light" : "dark"} />
+                <Grid item md={2} container alignItems="center" justify="space-between">
+                    <Box component={TransparentRouterLink} to="/" display="inline-flex" mr={1}>
+                        <Logo color={darkBg ? "light" : "dark"} />
+                    </Box>
+                    <LanguageSelect />
                 </Grid>
 
                 <Grid item container alignItems="center" spacing={4} md={9}>
@@ -67,13 +76,14 @@ const Navbar = ({ darkBg }) => {
 
                 <Grid item md={1}>
                     <Box position="relative">
-                        <Box component={motion.div} style={{ position: 'fixed', transform: 'translateY(-50%)' }}>
+                        <Box component={motion.div} className={classes.bagButtonWrapper} onClick={handleCartOpen}>
                             <Typography
                                 color="inherit"
                                 variant="h3"
                                 component={motion.p}
+                                className={classes.bagButton}
                             >
-                                {t('bag')} 0
+                                {t('bag')} {get(checkout, 'lineItems.length', 0)}
                         </Typography>
                         </Box>
                     </Box>

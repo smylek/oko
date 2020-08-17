@@ -27,7 +27,7 @@ const LOAD_COLLECTIONS = gql`
 const Shop = () => {
     const [isPresent, safeToRemove] = usePresence()
     const { loading, error, data } = useQuery(LOAD_COLLECTIONS);
-    const [filter, setFilter] = React.useState({ colors: [], productType: '' })
+    const [filter, setFilter] = React.useState({})
 
     React.useEffect(() => {
         !isPresent && safeToRemove()

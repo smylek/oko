@@ -53,7 +53,7 @@ const ShopDetailImages = ({ layoutIdForFirstImage, items }) => {
             <AnimatePresence>
                 <CardMedia
                     layoutId={layoutIdForFirstImage}
-                    component={motion.img}
+                    component={motion.div}
                     image={transformedSrc}
                     title={altText}
                     key={transformedSrc}
@@ -84,7 +84,7 @@ const ShopDetailImages = ({ layoutIdForFirstImage, items }) => {
                     <Grid container spacing={2}>
                         {items.map(({ transformedSrc, altText = '' }, index) => <Grid item xs={12} key={transformedSrc + index}>
                             <CardMedia
-                                component={motion.img}
+                                component={motion.div}
                                 image={transformedSrc}
                                 title={altText}
                                 key={transformedSrc}

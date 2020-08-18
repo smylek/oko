@@ -81,7 +81,7 @@ const ShopItemsCard = ({ data }) => {
                         <Box className={classes.imageSpaceHolder} />
 
                         <CardMedia
-                            component={motion.img}
+                            component={motion.div}
                             layoutId={`${data.handle}-product-image`}
                             image={productImageSrc}
                             title={data.title}
@@ -94,7 +94,7 @@ const ShopItemsCard = ({ data }) => {
                             transition={{ duration: .2 }}
                         />
                         <CardMedia
-                            component={motion.img}
+                            component={motion.div}
                             layoutId={`${data.handle}-model-image`}
                             image={modelImageSrc}
                             title={data.title}

@@ -29,11 +29,17 @@ const animationProps = {
     transition: { duration: HOMEPAGE_ANIMATION_TIME }
 }
 
+const buttonAnimationProps = {
+    initial: { opacity: 0 },
+    animate: { opacity: 1 },
+    exit: { opacity: 0, scale: .1 },
+}
+
 const Home = () => {
     const { t } = useTranslation()
     const classes = useStyles()
     const [isPresent, safeToRemove] = usePresence()
-    
+
     React.useEffect(() => {
         !isPresent && setTimeout(safeToRemove, HOMEPAGE_ANIMATION_TIME * 1000)
     }, [isPresent])
@@ -56,9 +62,7 @@ const Home = () => {
                     <Box
                         component={motion.div}
                         className={classes.buttonWrapper}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0, scale: .1 }}
+                        {...buttonAnimationProps}
                     >
                         <Button color="primary-inversed" component={TransparentRouterLink} to="/shop">
                             {t("start")}

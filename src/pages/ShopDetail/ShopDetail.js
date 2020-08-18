@@ -473,7 +473,7 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
                             <AnimatePresence exitBeforeEnter>
                                 <CardMedia
                                     layoutId={`${data.handle}-product-image`}
-                                    component={motion.img}
+                                    component={motion.div}
                                     image={productImageSrc.transformedSrc}
                                     title={data.title}
                                     key={productImageSrc.transformedSrc}

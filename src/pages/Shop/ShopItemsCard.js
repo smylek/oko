@@ -110,7 +110,7 @@ const ShopItemsCard = ({ data }) => {
                 </Box>
             </Tilt>
 
-            <Box p={1} textAlign="center">
+            <Box p={1} mb="auto" textAlign="center">
                 <AnimatePresence exitBeforeEnter>
                     <Typography layoutId={`${data.handle}-product-name`} component={motion.span} variant="subtitle1" className={classes.productName}>
                         {data.title}

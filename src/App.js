@@ -22,12 +22,23 @@ export const shopifyClient = Client.buildClient({
 });
 
 export const BuyButtonContext = React.createContext();
+export const MenuContext = React.createContext();
 
 function App() {
   const [isCartOpen, setIsCartOpen] = React.useState(false)
   const [checkout, setCheckout] = React.useState({ lineItems: [] })
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false)
 
-  React.useEffect(() => {    
+  const handleMenuOpen = React.useCallback(() => {
+    setIsMenuOpen(true)
+  }, [setIsMenuOpen,])
+
+  const handleMenuClose = React.useCallback(() => {
+    setIsMenuOpen(false)
+  }, [setIsMenuOpen,])
+
+
+  React.useEffect(() => {
     shopifyClient.checkout.create().then((res) => {
       //const lineItems = getCookie(process.env.REACT_APP_CHECKOUT_COOKIE_NAME)      
       setCheckout(res) // ? {...res, lineItems} : res)
@@ -45,7 +56,7 @@ function App() {
     const checkoutId = checkout.id
 
     return shopifyClient.checkout.addLineItems(checkoutId, lineItemsToAdd).then(res => {
-      setCheckout(res);      
+      setCheckout(res);
       //setCookie(process.env.REACT_APP_CHECKOUT_COOKIE_NAME, res.variableValues.lineItems)
     });
   }, [checkout, setCheckout])
@@ -77,7 +88,7 @@ function App() {
     setIsCartOpen(false);
   }, [])
 
-  const shopifyContext = React.useMemo(() => ({
+  const shopifyContextValue = React.useMemo(() => ({
     client: shopifyClient,
     isCartOpen,
     checkout,
@@ -96,6 +107,16 @@ function App() {
     openCheckout
   ])
 
+  const menuContextValue = React.useMemo(() => ({
+    isMenuOpen,
+    handleMenuOpen,
+    handleMenuClose
+  }), [
+    isMenuOpen,
+    handleMenuOpen,
+    handleMenuClose
+  ])
+
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
@@ -103,7 +124,7 @@ function App() {
 
         <React.Suspense fallback={<CircularProgress />}>
           <BrowserRouter>
-            <RouteChangeEffect handleCartClose={handleCartClose} />
+            <RouteChangeEffect handleCartClose={handleCartClose} handleMenuClose={handleMenuClose} />
 
             <Cart
               openCheckout={openCheckout}
@@ -115,22 +136,24 @@ function App() {
             />
 
             <AnimateSharedLayout>
-              <BuyButtonContext.Provider value={shopifyContext}>
-                <Layout>
-                  <Route
-                    render={({ location }) => (
-                      <AnimatePresence exitBeforeEnter>
-                        <Switch location={location} key={location.pathname}>
-                          <Route exact path='/shop/:slug' component={ShopDetail} />
-                          <Route exact path='/shop' component={Shop} />
-                          <Route exact path='/pages/:slug' component={Page} />
-                          <Route exact path='/' component={Home} />
-                        </Switch>
-                      </AnimatePresence>
-                    )}
-                  />
-                </Layout>
-              </BuyButtonContext.Provider>
+              <MenuContext.Provider value={menuContextValue}>
+                <BuyButtonContext.Provider value={shopifyContextValue}>
+                  <Layout>
+                    <Route
+                      render={({ location }) => (
+                        <AnimatePresence exitBeforeEnter>
+                          <Switch location={location} key={location.pathname}>
+                            <Route exact path='/shop/:slug' component={ShopDetail} />
+                            <Route exact path='/shop' component={Shop} />
+                            <Route exact path='/pages/:slug' component={Page} />
+                            <Route exact path='/' component={Home} />
+                          </Switch>
+                        </AnimatePresence>
+                      )}
+                    />
+                  </Layout>
+                </BuyButtonContext.Provider>
+              </MenuContext.Provider>
             </AnimateSharedLayout>
           </BrowserRouter>
         </React.Suspense>

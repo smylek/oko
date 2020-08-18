@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Grid, Typography, makeStyles, CardMedia, Button, Select, MenuItem, useTheme, TextField } from '@material-ui/core';
+import { Box, Grid, Typography, makeStyles, CardMedia, Button, Select, MenuItem, useTheme, TextField, useMediaQuery } from '@material-ui/core';
 import { usePresence, AnimatePresence, motion } from 'framer-motion';
 import { useQuery, gql, useLazyQuery } from '@apollo/client';
 import Breadcrumbs from 'components/Breadcrumbs';
@@ -108,7 +108,10 @@ const useStyles = makeStyles(theme => ({
     image: {
         paddingBottom: '133.333333333%',
         width: '100%'
-    }
+    },
+    productName: {
+        fontWeight: "bold"
+    },
 }))
 
 const useCachedProductData = ({ client, slug }) => {
@@ -126,8 +129,8 @@ const useCachedProductData = ({ client, slug }) => {
     }
 }
 
-const VariantSelector = ({ option, handleOptionChange, error }) => {
-    return (<Box display="flex" alignItems="center">
+const VariantSelector = ({ option, handleOptionChange, error, mr }) => {
+    return (<Box display="flex" alignItems="center" mr={mr}>
         <Typography variant="body1" id={`${option.name}-label-id`} component="label">
             {option.name}
         </Typography>
@@ -163,6 +166,7 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
     const { t } = useTranslation()
     const theme = useTheme()
     const classes = useStyles()
+    const mobile = useMediaQuery(theme => theme.breakpoints.down('sm'))
     const [isPresent, safeToRemove] = usePresence()
 
     const [selectedOptions, setSelectedOptions] = React.useState({})
@@ -248,9 +252,8 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
 
     if (error) return <div>Error :(</div>
 
-    const [productImageSrc, ...images] = get(data, 'images.edges.length') ?
-        get(data, 'images.edges').map(({ node }) => ({ ...node })) :
-        [null, []]
+    const allImages = get(data, 'images.edges', []).map(({ node }) => ({ ...node }))
+    const [productImageSrc, ...images] = allImages.length > 1 ? allImages : [null, []]
 
     const compareAtPrice = computePriceLabel(get(variantData, 'compareAtPriceV2', get(data, 'variants.edges.0.node.compareAtPriceV2')))
     const price = computePriceLabel(get(variantData, 'priceV2', get(data, 'priceRange.minVariantPrice')))
@@ -266,9 +269,114 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
                 handleOptionChange={handleOptionChange}
                 key={option.id.toString()}
                 option={option}
+                mr={mobile ? 2 : 0}
             />
         );
     });
+
+    if (mobile) {
+        return <Box px={2}>
+            <Breadcrumbs items={breadcrumbs} />
+
+            <Box mb={2} />
+
+            <Grid container>
+                <Grid item xs={12}>
+                    <ShopDetailImages
+                        layoutIdForFirstImage={`${data.handle}-product-image`}
+                        items={allImages}
+                    />
+                </Grid>
+
+                <Grid item xs={12} container direction="column" justify="center">
+                    <AnimatePresence exitBeforeEnter>
+                        <Typography layoutId={`${data.handle}-product-name`} align="center" component={motion.span} variant="subtitle1" className={classes.productName}>
+                            {data.title}
+                        </Typography>
+                    </AnimatePresence>
+
+                    <Box display="flex" justifyContent="center">
+                        <AnimatePresence exitBeforeEnter>
+                            <Typography
+                                layoutId={`${data.handle}-product-price`}
+                                component={motion.span}
+                                variant="body1"
+                                className={clsx({
+                                    [classes.withLowerPrice]: compareAtPrice
+                                })}
+                            >
+                                {price}
+                            </Typography>
+                        </AnimatePresence>
+
+                        {compareAtPrice && <AnimatePresence exitBeforeEnter>
+                            {compareAtPrice && <Typography layoutId={`${data.handle}-product-compare-at-price`} component={motion.span} variant="body1" className={classes.compareAtPrice}>
+                                {compareAtPrice}
+                            </Typography>}
+                        </AnimatePresence>}
+                    </Box>
+                </Grid>
+
+                {(!loading && data) && <Box
+                    display="flex"
+                    flexDirection="column"
+                    component={motion.div}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                >
+                    <Box my={2} display="flex" flexDirection="row" flexWrap="wrap">
+                        {variantSelectors}
+
+                        <Box display="flex" alignItems="center" width={140}>
+                            <Typography variant="body1" id={`quanity-label-id`} component="label">
+                                {t('quanity')}
+                            </Typography>
+
+                            <Box ml={1} />
+
+                            <TextField
+                                min="1"
+                                type="number"
+                                value={selectedVariantQuantity}
+                                onChange={handleQuantityChange}
+                            />
+                        </Box>
+                    </Box>
+
+                    {showError && <Box mb={3}>
+                        <Typography variant="body2" color="error">
+                            {t('fillAllOptionsError')}
+                        </Typography>
+                    </Box>}
+
+                    <Box display="flex">
+                        <Button color="primary" disabled={loadingVariant} onClick={handleBuyClick} fullWidth>
+                            {t('buy')}
+                        </Button>
+
+                        <Box ml={1} />
+
+                        <Button variant="outlined" color="primary" disabled={loadingVariant} onClick={handleAddToBagClick} fullWidth>
+                            {t('addToBag')}
+                        </Button>
+                    </Box>
+
+                    <Box mt={3}>
+                        <Typography variant="body1" gutterBottom>
+                            <Box component="span" fontStyle="italic">
+                                {data.description}
+                            </Box>
+                        </Typography>
+
+                        <Typography variant="body1" gutterBottom>
+                            <Box component="span" fontWeight="light" mr={1}>Composition:</Box>
+                            <Box component="span" fontWeight="bold">Cotton 100%</Box>
+                        </Typography>
+                    </Box>
+                </Box>}
+            </Grid>
+        </Box >
+    }
 
     return <Box px={6}>
         <Grid container>
@@ -324,6 +432,7 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
 
                                 <Box my={2}>
                                     {variantSelectors}
+
                                     <Box display="flex" alignItems="center" width={140}>
                                         <Typography variant="body1" id={`quanity-label-id`} component="label">
                                             {t('quanity')}
@@ -348,13 +457,13 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
 
                                 <Box display="flex">
                                     <Button color="primary" disabled={loadingVariant} onClick={handleBuyClick} >
-                                        Buy
+                                        {t('buy')}
                                     </Button>
 
                                     <Box ml={1} />
 
                                     <Button variant="outlined" color="primary" disabled={loadingVariant} onClick={handleAddToBagClick}>
-                                        Add to bag
+                                        {t('addToBag')}
                                     </Button>
                                 </Box>
                             </Box>}
@@ -422,286 +531,7 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
 
             </Grid>
         </Grid>
-    </Box >
-
-
-    // <div className="Product">
-    //     {data.images.length ? <img src={variantImage.src} alt={`${data.title} product shot`} /> : null}
-    //     <h5 className="Product__title">{data.title}</h5>
-    //     <span className="Product__price">{computePriceLabel(get(variantData, 'priceV2'))}</span>
-    //     {variantSelectors}
-    //     <label className="Product__option">
-    //         Quantity
-    //   <input min="1" type="number" value={variantQuantity} onChange={handleQuantityChange}></input>
-    //     </label>
-    //     <button className="Product__buy button" onClick={() => addVariantToCart(variantData.id, variantQuantity)}>Add to Cart</button>
-    // </div>
+    </Box>
 }
 
 export default ShopDetail
-
-/*
-const _ShopDetail = ({ match: { params: { slug } } }) => {
-    const [selectedSize, setSelectedSize] = React.useState()
-
-    const handleSizeSelect = React.useCallback(e => setSelectedSize(e.target.value), [])
-
-
-
-    const [productImageSrc, ...images] = get(data, 'images.edges.length') ?
-        get(data, 'images.edges').map(({ node }) => ({ ...node })) :
-        [null, []]
-
-
-    const splitByTypes = (acc, current) => {
-        const [size, color] = current.title.split('/')
-        acc[0].push(size.trim())
-        acc[1].push(color.trim())
-        return acc
-    }
-
-    const compareAtPrice = computePriceLabel(get(data, 'variants.edges.0.node.compareAtPriceV2'))
-    const price = computePriceLabel(get(data, 'priceRange.minVariantPrice'))
-
-    const variants = get(data, 'variants.edges', []).map(({ node }) => ({ ...node }))
-    const [sizes = [], colors = []] = loading ? [] : variants.reduce(splitByTypes, [[], []])
-    const uniqSizes = [...new Set(sizes)]
-    const uniqColors = [...new Set(colors)]
-
-    const descriptionBgColor = theme.palette.primary.main
-    const descriptionTextColor = theme.palette.primary.contrastText
-
-    let variant = selectedVariant || product.variants[0]
-    let variantQuantity = selectedVariantQuantity || 1
-    let variantSelectors = this.props.product.options.map((option) => {
-
-        return (
-            <VariantSelector
-                handleOptionChange={this.handleOptionChange}
-                key={option.id.toString()}
-                option={option}
-            />
-        );
-    });
-
-
-    return (
-
-    )
-}
-
-export default React.memo(ShopDetail, deepEqual)
-
-/*
-
-const addVariantToCart = (variantId, quantity) => {
-    this.setState({
-        isCartOpen: true,
-    });
-
-    const lineItemsToAdd = [{ variantId, quantity: parseInt(quantity, 10) }]
-    const checkoutId = this.state.checkout.id
-
-    return this.props.client.checkout.addLineItems(checkoutId, lineItemsToAdd).then(res => {
-        this.setState({
-            checkout: res,
-        });
-    });
-}
-function loadBuyButton(node) {
-
-    console.log({ShopifyBuy,shopifyClient})
-    const ui = ShopifyBuy.UI.init(shopifyClient);
-
-    ui.createComponent('product', {
-        id: '5602202124438',
-        node: document.getElementById('product-component-1597588094609'),
-    })
-
-
-
-    var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
-    if (window.ShopifyBuy) {
-        if (window.ShopifyBuy.UI) {
-            ShopifyBuyInit();
-        } else {
-            loadScript();
-        }
-    } else {
-        loadScript();
-    }
-
-
-
-    function loadScript() {
-        var script = document.createElement('script');
-        script.async = true;
-        script.src = scriptURL;
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
-        script.onload = ShopifyBuyInit;
-    }
-    function ShopifyBuyInit() {
-        var client = window.ShopifyBuy.buildClient({
-            domain: 'sklep-sklepik.myshopify.com',
-            storefrontAccessToken: '3a1a15d5f97fbec3756f4d3de98ed549',
-        });
-        window.ShopifyBuy.UI.onReady(client).then(function (ui) {
-            ui.createComponent('product', {
-                id: '5602202124438',
-                node, // document.getElementById('product-component-1597588094609'),
-                moneyFormat: '%7B%7Bamount_with_comma_separator%7D%7D%20zl',
-                options: {
-                    product: {
-                        iframe: false,
-                        order: [
-                            'button'
-                        ]
-                    }
-                }
-                /*
-                "product": {
-                    "styles": {
-                        "product": {
-                            "@media (min-width: 601px)": {
-                                "max-width": "calc(25% - 20px)",
-                                "margin-left": "20px",
-                                "margin-bottom": "50px"
-                            }
-                        },
-                        "button": {
-                            "font-family": "Montserrat, sans-serif",
-                            "font-size": "18px",
-                            "padding-top": "17px",
-                            "padding-bottom": "17px",
-                            ":hover": {
-                                "background-color": "#b157e6"
-                            },
-                            "background-color": "#c561ff",
-                            ":focus": {
-                                "background-color": "#b157e6"
-                            },
-                            "border-radius": "0px"
-                        },
-                        "quantityInput": {
-                            "font-size": "18px",
-                            "padding-top": "17px",
-                            "padding-bottom": "17px"
-                        }
-                    },
-                    "contents": {
-                        "img": false,
-                        "title": false,
-                        "price": false
-                    },
-                    "text": {
-                        "button": "Add to cart"
-                    },
-                    "googleFonts": [
-                        "Montserrat"
-                    ]
-                },
-                "productSet": {
-                    "styles": {
-                        "products": {
-                            display: 'none',
-                            "@media (min-width: 601px)": {
-                                "margin-left": "-20px"
-                            }
-                        }
-                    }
-                },
-                "modalProduct": {
-                    "contents": {
-                        "img": false,
-                        "imgWithCarousel": true,
-                        "button": false,
-                        "buttonWithQuantity": true
-                    },
-                    "styles": {
-                        "product": {
-                            "@media (min-width: 601px)": {
-                                "max-width": "100%",
-                                "margin-left": "0px",
-                                "margin-bottom": "0px"
-                            }
-                        },
-                        "button": {
-                            "font-family": "Montserrat, sans-serif",
-                            "font-size": "18px",
-                            "padding-top": "17px",
-                            "padding-bottom": "17px",
-                            ":hover": {
-                                "background-color": "#b157e6"
-                            },
-                            "background-color": "#c561ff",
-                            ":focus": {
-                                "background-color": "#b157e6"
-                            },
-                            "border-radius": "0px"
-                        },
-                        "quantityInput": {
-                            "font-size": "18px",
-                            "padding-top": "17px",
-                            "padding-bottom": "17px"
-                        }
-                    },
-                    "googleFonts": [
-                        "Montserrat"
-                    ],
-                    "text": {
-                        "button": "Add to cart"
-                    }
-                },
-                "cart": {
-                    "styles": {
-                        "button": {
-                            "font-family": "Montserrat, sans-serif",
-                            "font-size": "18px",
-                            "padding-top": "17px",
-                            "padding-bottom": "17px",
-                            ":hover": {
-                                "background-color": "#b157e6"
-                            },
-                            "background-color": "#c561ff",
-                            ":focus": {
-                                "background-color": "#b157e6"
-                            },
-                            "border-radius": "0px"
-                        }
-                    },
-                    "text": {
-                        "total": "Subtotal",
-                        "button": "Checkout"
-                    },
-                    "googleFonts": [
-                        "Montserrat"
-                    ]
-                },
-                "toggle": {
-                    "styles": {
-                        "toggle": {
-                            "font-family": "Montserrat, sans-serif",
-                            "background-color": "#c561ff",
-                            ":hover": {
-                                "background-color": "#b157e6"
-                            },
-                            ":focus": {
-                                "background-color": "#b157e6"
-                            }
-                        },
-                        "count": {
-                            "font-size": "18px"
-                        }
-                    },
-                    "googleFonts": [
-                        "Montserrat"
-                    ]
-                }
-            }
-            });
-        });
-
-    }
-
-}
-*/

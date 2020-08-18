@@ -1,18 +1,20 @@
 import React from 'react'
 import Logo from './Logo'
-import { Box } from '@material-ui/core'
+import { Box, useMediaQuery } from '@material-ui/core'
 import { motion } from 'framer-motion'
 
-
-const resultSize = {
-    width: `${50}vw`,
+const mobileStyle = {
+    y: '15vh',
+    x: '-25vw',
+    width: `150vw`,
     height: '97vh',
 }
 
 const style = {
     y: '8vh',
     x: '50%',
-    ...resultSize
+    width: `50vw`,
+    height: '97vh',
 }
 
 const animationProps = {
@@ -23,12 +25,14 @@ const animationProps = {
 }
 
 const AnimatedGigaLogo = () => {
+    const mobile = useMediaQuery(theme => theme.breakpoints.down('sm'))
+
     return (
         <Box
             width="100vw"
             height="100vh"
             position="absolute"
-            style={style}
+            style={mobile ? mobileStyle : style}
             component={motion.div}
             {...animationProps}
         >

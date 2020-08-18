@@ -1,7 +1,7 @@
 import React from 'react'
 import Layout from 'components/layouts/Layout'
 import { useTranslation } from 'react-i18next'
-import { Box, Typography, makeStyles } from '@material-ui/core'
+import { Box, Typography, makeStyles, useMediaQuery } from '@material-ui/core'
 import Button from 'components/Button'
 import AnimatedGigaLogo from 'components/AnimatedGigaLogo'
 import { motion, usePresence, AnimatePresence } from 'framer-motion'
@@ -23,9 +23,9 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const animationProps = {
-    initial: { opacity: 0, scale: 2, y: 50 },
-    animate: { opacity: 1, scale: 1, y: 0 },
-    exit: { opacity: 0, scale: 2, y: 50 },
+    initial: { opacity: 0, scale: 2, y: '40vh' },
+    animate: { opacity: 1, scale: 1, y: '-5vh' },
+    exit: { opacity: 0, scale: 2, y: '40vh' },
     transition: { duration: HOMEPAGE_ANIMATION_TIME }
 }
 
@@ -33,7 +33,7 @@ const Home = () => {
     const { t } = useTranslation()
     const classes = useStyles()
     const [isPresent, safeToRemove] = usePresence()
-
+    
     React.useEffect(() => {
         !isPresent && setTimeout(safeToRemove, HOMEPAGE_ANIMATION_TIME * 1000)
     }, [isPresent])

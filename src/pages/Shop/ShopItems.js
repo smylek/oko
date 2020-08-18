@@ -80,14 +80,14 @@ const ShopItems = ({ filter }) => {
     !loading && refetch({ query })
   }, [filter,])
 
-  if (loading) return <div style={{ minHeight: '80vh' }}>Loading...</div>
+  if (loading) return <Box minHeight="80vh">Loading...</Box>
 
-  if (error) return <div>Error :(</div>
+  if (error) return <Box>Error :(</Box>
 
   return (
-    <Box style={{ minHeight: '80vh' }}>
+    <Box minHeight="80vh" p={1} mt={2}>
       <Grid container spacing={2}>
-        {data.products.edges.map(({ node: item }) => <Grid key={item.id} item xs={12} sm={6} md={4} xl={3}>
+        {data.products.edges.map(({ node: item }) => <Grid key={item.id} item xs={6} sm={6} md={4} xl={3}>
           <ShopItemsCard data={item} />
         </Grid>)}
       </Grid>

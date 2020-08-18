@@ -15,6 +15,10 @@ const useStyles = makeStyles(theme => ({
     dark: {
         fill: theme.palette.common.black
     },
+    sizeSmall: {
+        width: 54,
+        height: 52
+    },
     sizeNormal: {
         width: 108,
         height: 104
@@ -35,6 +39,7 @@ const Logo = ({ logo, color, size, ...props }) => {
             className={clsx(classes.root, {
                 [classes.light]: color === 'light',
                 [classes.dark]: color === 'dark',
+                [classes.sizeSmall]: size === 'small',
                 [classes.sizeNormal]: size === 'medium',
                 [classes.sizeFull]: size === 'full',
             })}

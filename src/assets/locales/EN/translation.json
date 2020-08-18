@@ -90,40 +90,25 @@
             "level": 0
         },
         {
+            "section": "COLORS"
+        }
+    ],
+    "colors": [
+        {
             "title": "White",
-            "value": "WHITE",
-            "namespace": "color",
-            "level": 1
+            "value": "WHITE"
         },
         {
             "title": "Blue",
-            "value": "BLUE",
-            "namespace": "color",
-            "level": 1
+            "value": "BLUE"
         },
         {
             "title": "Black",
-            "value": "BLACK",
-            "namespace": "color",
-            "level": 1
+            "value": "BLACK"
         },
         {
             "title": "Green",
-            "value": "GREEN",
-            "namespace": "color",
-            "level": 1
-        },
-        {
-            "title": "Multicolor",
-            "value": "MULTICOLOR",
-            "namespace": "color",
-            "level": 1
-        },
-        {
-            "title": "Colorless",
-            "value": "COLORLESS",
-            "namespace": "color",
-            "level": 1
+            "value": "GREEN"
         }
     ]
 }

@@ -1,17 +1,12 @@
 import React from 'react';
 import CartLineItem from './CartLineItem';
-import './Cart.css'
-import { Drawer, Box, Typography, makeStyles, IconButton } from '@material-ui/core';
+import { Drawer, Box, Typography, makeStyles } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import Button from 'components/Button';
 import { computePriceLabel } from 'utils/price';
-import CloseIcon from '@material-ui/icons/Close'
+import DrawerHeader from 'components/DrawerHeader';
 
 const useStyles = makeStyles(theme => ({
-  header: {
-    ...theme.typography.h3,
-    fontWeight: 900
-  },
   uppercase: {
     textDecoration: 'uppercase'
   },
@@ -47,19 +42,13 @@ const Cart = ({
       anchor={'right'}
       open={isCartOpen}
       onClose={handleCartClose}
-    //onOpen={toggleDrawer(anchor, true)}
     >
       <Box minWidth={350} width={350} maxWidth={'100vw'} display="flex" flexDirection="column" height="100%">
-        <Box display="flex" alignItems="center" justifyContent="space-between" width="100%" p={2}>
-          <Typography className={classes.header}>
-            {t('yourCart')}
-          </Typography>
-
-          <IconButton edge="end" onClick={handleCartClose}>
-            <CloseIcon />
-          </IconButton>
-        </Box>
-
+        <DrawerHeader
+          title={t('yourCart')}
+          onClose={handleCartClose}
+        />
+        
         <Box flexGrow={1} px={2}>
           {line_items}
         </Box>

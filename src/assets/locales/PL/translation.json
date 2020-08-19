@@ -1,5 +1,5 @@
 {
-    "shop": "Sklep",
+    "shop": "Shop",
     "home": "Index",
     "yourCart": "Your Cart",
     "heroText": "Best quality clothing from Poland.",
@@ -12,7 +12,7 @@
             "title": "Privacy Policy",
             "showInFooter": true,
             "bodyDecorator": "left",
-            "body": "# Raz dwa trzy body"
+            "body": "# Raz dwa trzy body  \nLorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ultricies cursus diam, ut feugiat arcu gravida et. Duis nec metus eu massa vulputate laoreet. Aenean condimentum ac est volutpat mattis. Nulla lacinia iaculis auctor. Proin tristique gravida neque at dictum. Morbi imperdiet porttitor dui, non feugiat ex euismod sit amet. \n\nPellentesque sed lorem nulla. Duis bibendum sit amet ex non bibendum. Mauris maximus ornare nulla ac gravida. Maecenas interdum urna non mauris vestibulum viverra. Duis posuere sem magna, volutpat dictum massa egestas quis. Praesent lobortis urna in lectus dapibus gravida. Pellentesque consequat fermentum sapien vitae dapibus. Curabitur accumsan, enim ut aliquet volutpat, odio nunc posuere sapien, vel efficitur magna nulla ut augue. Mauris ornare, diam et tempor pellentesque, dui mi aliquet lectus, vehicula egestas ex nisl sit amet sapien. Cras lacinia leo in dui fringilla, sit amet tincidunt dui scelerisque. Donec euismod consequat metus, vitae facilisis turpis elementum in. Pellentesque eu arcu nec nulla lobortis tristique a eu nisi. Curabitur vehicula mi vitae cursus laoreet. Sed et tellus nibh. Nam nibh tellus, luctus a venenatis eget, tristique ullamcorper magna. Curabitur finibus rutrum aliquam. Nam ut egestas justo. Aenean sem magna, bibendum non tempus eget, facilisis vel tellus. Ut sit amet sagittis nulla, eget facilisis eros. Vestibulum luctus purus est, a dapibus lacus efficitur vitae. "
         },
         {
             "slug": "cookies",

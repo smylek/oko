@@ -7,6 +7,14 @@ import Markdown from 'markdown-to-jsx';
 import Page404 from './Page404'
 import Sidebar from 'components/Sidebar'
 import { usePresence } from 'framer-motion'
+import Tilt from 'react-tilt'
+
+const tiltStyle = { width: '100%' }
+
+const tiltOptions = {
+    max: 2,
+    scale: 1
+}
 
 const options = {
     overrides: {
@@ -87,9 +95,13 @@ const Page = ({ match: { params: { slug } } }) => {
                             {page.bodyDecorator === "left" && <Grid item md={3}>
                                 <img src={decorator} alt="" className={classes.decorator} />
                             </Grid>}
+
                             <Grid item md={page.bodyDecorator ? 9 : 12}>
-                                <Markdown children={page.body} option={options} />
+                                <Tilt options={tiltOptions} style={tiltStyle}>
+                                    <Markdown children={page.body} option={options} />
+                                </Tilt>
                             </Grid>
+
                             {page.bodyDecorator === "right" && <Grid item md={3}>
                                 <img src={decorator} alt="" className={classes.decorator} />
                             </Grid>}

@@ -1,15 +1,17 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { shallowEqualObjects } from 'shallow-equal'
+import { shallowEqualObjects, shallowEqualArrays } from 'shallow-equal'
 import Sidebar from 'components/Sidebar'
 import get from 'lodash.get'
 import flatten from 'lodash.flatten'
+import { defaultTo } from 'utils/functions'
 
 const toggleOrFix = (_filter, namespace, value) => {
     return get(_filter, namespace, []).includes(value) ?
         get(_filter, namespace, []).filter(y => y !== value) :
         [...get(_filter, namespace, []), value]
 }
+
 
 
 const ShopSidebar = ({ filter, onFilterChange }) => {
@@ -57,7 +59,7 @@ const ShopSidebar = ({ filter, onFilterChange }) => {
             }
         }
 
-        const isSelectable = x.hasOwnProperty('namespace') && x.hasOwnProperty('value')
+        const isSelectable = x.hasOwnProperty('namespace') && (x.hasOwnProperty('value') || x.hasOwnProperty('values'))
 
         const newObj = {
             level: x.level,
@@ -67,10 +69,14 @@ const ShopSidebar = ({ filter, onFilterChange }) => {
         if (isSelectable) {
             newObj.onClick = () => handleChange({
                 ..._filter,
-                [x.namespace]: toggleOrFix(_filter, x.namespace, x.value)
+                [x.namespace]: x.value ?
+                    toggleOrFix(_filter, x.namespace, x.value) :
+                    [...x.values]
 
             })
-            newObj.isSelected = () => get(_filter, x.namespace, []).includes(x.value)
+            newObj.isSelected = () => x.value ?
+                get(_filter, x.namespace, []).includes(x.value) :
+                x.values.every(o => _filter[x.namespace].includes(o))
         }
 
         return newObj

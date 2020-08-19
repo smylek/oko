@@ -3,6 +3,7 @@ import { Box, Grid } from '@material-ui/core'
 import { gql, useQuery } from '@apollo/client'
 import ShopItemsCard from './ShopItemsCard';
 import { shallowEqualObjects } from 'shallow-equal';
+import deepEqual from 'fast-deep-equal/react'
 
 export const LOAD_ITEMS = gql`
 query GetProducts($query: String) {    
@@ -65,8 +66,13 @@ query GetProducts($query: String) {
 const computeQuery = filter => {
   let result = []
 
+
   for (const namespace in filter) {
-    result.push(`(${filter[namespace].map(x => `tag:${x}`).join(' OR ')})`)
+    if (namespace === 'categories') {
+      result.push(`(${filter[namespace].map(x => `product_type:${x}`).join(' OR ')})`)
+    } else {
+      result.push(`(${filter[namespace].map(x => `tag:${x}`).join(' OR ')})`)
+    }
   }
 
   return result.join(' AND ')
@@ -85,7 +91,7 @@ const ShopItems = ({ filter }) => {
   if (error) return <Box>Error :(</Box>
 
   return (
-    <Box minHeight="80vh" p={1} mt={2}>
+    <Box minHeight="80vh" p={1}>
       <Grid container spacing={2}>
         {data.products.edges.map(({ node: item }) => <Grid key={item.id} item xs={6} sm={6} md={4} xl={3}>
           <ShopItemsCard data={item} />
@@ -95,4 +101,4 @@ const ShopItems = ({ filter }) => {
   )
 }
 
-export default React.memo(ShopItems, shallowEqualObjects)
+export default React.memo(ShopItems, deepEqual)

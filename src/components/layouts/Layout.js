@@ -4,9 +4,9 @@ import Navbar from 'components/Navbar'
 import clsx from 'clsx'
 import { useLocation } from 'react-router-dom'
 import { HOMEPAGE_ANIMATION_TIME } from 'constans'
-import { shallowEqualObjects } from 'shallow-equal'
 import Footer from 'components/Footer'
 import Scrollbars from 'react-custom-scrollbars'
+import { AnimateSharedLayout } from 'framer-motion'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -17,6 +17,7 @@ const useStyles = makeStyles(theme => ({
     },
     fullPage: {
         overflowY: 'hidden',
+        maxHeight: '100vh'
     },
     darkBg: {
         backgroundColor: '#000'
@@ -40,7 +41,6 @@ const Layout = ({ children, className }) => {
     const classes = useStyles()
     const location = useLocation()
     const darkBg = React.useMemo(() => shouldUseDarkBg(location.pathname), [location.pathname])
-    // todo chowanie scrolla jak sie zmienia home -> shop
     const isFullPageRoute = React.useMemo(() => shouldUseFullPage(location.pathname), [location.pathname])
 
     return (
@@ -52,7 +52,9 @@ const Layout = ({ children, className }) => {
                 <Navbar {...{ darkBg }} />
 
                 <Box position="relative" display="flex" flexDirection="column" flexGrow={1}>
-                    {children}
+                    <AnimateSharedLayout>
+                        {children}
+                    </AnimateSharedLayout>
                 </Box>
 
                 {!isFullPageRoute && <Footer />}

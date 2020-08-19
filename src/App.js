@@ -13,8 +13,9 @@ import Page from 'pages/Page';
 import RouteChangeEffect from 'RouteChangeEffect';
 import Cart from 'components/Cart';
 import Client from 'shopify-buy'
-//import { getCookie, setCookie } from 'utils/cookies';
-//import { defaultTo } from 'utils/functions';
+import { setCookie, getCookie } from 'utils/cookies';
+import { defaultTo } from 'utils/functions';
+import { shallowEqualObjects } from 'shallow-equal';
 
 export const shopifyClient = Client.buildClient({
   domain: process.env.REACT_APP_SHOP_URI,
@@ -26,26 +27,31 @@ export const MenuContext = React.createContext();
 
 function App() {
   const [isCartOpen, setIsCartOpen] = React.useState(false)
-  const [checkout, setCheckout] = React.useState({ lineItems: [] })
   const [isMenuOpen, setIsMenuOpen] = React.useState(false)
+  const [checkout, setCheckout] = React.useState({
+    lineItems: []
+  })
 
-  const handleMenuOpen = React.useCallback(() => {
-    setIsMenuOpen(true)
-  }, [setIsMenuOpen,])
+  const handleMenuOpen = React.useCallback(() => setIsMenuOpen(true), [setIsMenuOpen])
 
-  const handleMenuClose = React.useCallback(() => {
-    setIsMenuOpen(false)
-  }, [setIsMenuOpen,])
-
+  const handleMenuClose = React.useCallback(() => setIsMenuOpen(false), [setIsMenuOpen])
 
   React.useEffect(() => {
-    shopifyClient.checkout.create().then((res) => {
-      //const lineItems = getCookie(process.env.REACT_APP_CHECKOUT_COOKIE_NAME)      
-      setCheckout(res) // ? {...res, lineItems} : res)
-    });
+    const checkoutFromCookies = getCookie(process.env.REACT_APP_CHECKOUT_COOKIE_NAME)
+
+    if (checkoutFromCookies) {
+      setCheckout(checkoutFromCookies)
+    }
+    else {
+      shopifyClient.checkout.create().then(res => setCheckout(res))
+    }
   }, [])
 
-  const openCheckout = React.useCallback(async () => {
+  React.useEffect(() => {
+    setCookie(process.env.REACT_APP_CHECKOUT_COOKIE_NAME, checkout)
+  }, [checkout])
+
+  const openCheckout = React.useCallback(() => {
     window.location.href = checkout.webUrl
   }, [checkout])
 
@@ -53,31 +59,16 @@ function App() {
     setIsCartOpen(true);
 
     const lineItemsToAdd = [{ variantId, quantity: parseInt(quantity, 10) }]
-    const checkoutId = checkout.id
-
-    return shopifyClient.checkout.addLineItems(checkoutId, lineItemsToAdd).then(res => {
-      setCheckout(res);
-      //setCookie(process.env.REACT_APP_CHECKOUT_COOKIE_NAME, res.variableValues.lineItems)
-    });
+    return shopifyClient.checkout.addLineItems(checkout.id, lineItemsToAdd).then(res => setCheckout(res))
   }, [checkout, setCheckout])
 
   const updateQuantityInCart = React.useCallback((lineItemId, quantity) => {
-    const checkoutId = checkout.id
     const lineItemsToUpdate = [{ id: lineItemId, quantity: parseInt(quantity, 10) }]
-
-    return shopifyClient.checkout.updateLineItems(checkoutId, lineItemsToUpdate).then(res => {
-      setCheckout(res);
-      //setCookie(process.env.REACT_APP_CHECKOUT_COOKIE_NAME, res.variableValues.lineItems)
-    });
+    return shopifyClient.checkout.updateLineItems(checkout.id, lineItemsToUpdate).then(res => setCheckout(res))
   }, [checkout, setCheckout])
 
   const removeLineItemInCart = React.useCallback((lineItemId) => {
-    const checkoutId = checkout.id
-
-    return shopifyClient.checkout.removeLineItems(checkoutId, [lineItemId]).then(res => {
-      setCheckout(res);
-      //setCookie(process.env.REACT_APP_CHECKOUT_COOKIE_NAME, res.variableValues.lineItems)
-    });
+    return shopifyClient.checkout.removeLineItems(checkout.id, [lineItemId]).then(res => setCheckout(res))
   }, [checkout, setCheckout])
 
   const handleCartOpen = React.useCallback(() => {
@@ -135,26 +126,24 @@ function App() {
               removeLineItemInCart={removeLineItemInCart}
             />
 
-            <AnimateSharedLayout>
-              <MenuContext.Provider value={menuContextValue}>
-                <BuyButtonContext.Provider value={shopifyContextValue}>
-                  <Layout>
-                    <Route
-                      render={({ location }) => (
-                        <AnimatePresence exitBeforeEnter>
-                          <Switch location={location} key={location.pathname}>
-                            <Route exact path='/shop/:slug' component={ShopDetail} />
-                            <Route exact path='/shop' component={Shop} />
-                            <Route exact path='/pages/:slug' component={Page} />
-                            <Route exact path='/' component={Home} />
-                          </Switch>
-                        </AnimatePresence>
-                      )}
-                    />
-                  </Layout>
-                </BuyButtonContext.Provider>
-              </MenuContext.Provider>
-            </AnimateSharedLayout>
+            <MenuContext.Provider value={menuContextValue}>
+              <BuyButtonContext.Provider value={shopifyContextValue}>
+                <Layout>
+                  <Route
+                    render={({ location }) => (
+                      <AnimatePresence exitBeforeEnter>
+                        <Switch location={location} key={location.pathname}>
+                          <Route exact path='/shop/:slug' component={ShopDetail} />
+                          <Route exact path='/shop' component={Shop} />
+                          <Route exact path='/pages/:slug' component={Page} />
+                          <Route exact path='/' component={Home} />
+                        </Switch>
+                      </AnimatePresence>
+                    )}
+                  />
+                </Layout>
+              </BuyButtonContext.Provider>
+            </MenuContext.Provider>
           </BrowserRouter>
         </React.Suspense>
       </ThemeProvider>
@@ -162,4 +151,9 @@ function App() {
   );
 }
 
-export default App;
+App.whyDidYouRender = true
+
+export default React.memo(App, (a,b) => {
+  console.log({a,b})
+  return shallowEqualObjects(a,b)
+});

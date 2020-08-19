@@ -2,35 +2,37 @@ import React from 'react'
 import { Box, Grid, useMediaQuery, IconButton, Button, SwipeableDrawer } from '@material-ui/core'
 import { usePresence } from 'framer-motion'
 import ShopSidebar from './ShopSidebar'
-import Breadcrumbs from 'components/Breadcrumbs'
-import { gql } from '@apollo/client'
+import { gql, useQuery } from '@apollo/client'
 import ShopItems from './ShopItems'
 import deepEqual from 'fast-deep-equal/react'
 import FilterIcon from '@material-ui/icons/FilterList'
-import CloseIcon from '@material-ui/icons/Close'
 import DrawerHeader from 'components/DrawerHeader'
 import { useTranslation } from 'react-i18next'
 
 const LOAD_COLLECTIONS = gql`
-  query GetCollections {    
-    
-        collections(first: 20) {
-          edges {
-            node {
-              id
-              title
-            }
-          }
+  query GetCollections {        
+    productTypes(first:20) {
+        edges {
+            node
         }
-      }  
-      `;
+    }
+    collections(first: 20) {
+        edges {
+            node {
+                id
+                title
+            }
+        }
+    }
+}
+`;
 
 
 
 const Shop = () => {
     const { t } = useTranslation()
     const [isPresent, safeToRemove] = usePresence()
-    //const { loading, error, data } = useQuery(LOAD_COLLECTIONS);
+    const { loading, error, data } = useQuery(LOAD_COLLECTIONS);
     const [filter, setFilter] = React.useState({})
     const mobile = useMediaQuery(theme => theme.breakpoints.down('sm'))
     const [isFilterOpen, setIsFilterOpen] = React.useState(false)
@@ -49,17 +51,6 @@ const Shop = () => {
         setIsFilterOpen(false)
     }, [])
 
-    const breadcrumbs = React.useMemo(() => [
-        {
-            label: 'Clothing',
-            to: '/shop'
-        },
-        {
-            label: 'T-shirts',
-            to: '/shop'
-        },
-    ], [])
-
     // const collections = data ? data.collections.edges.map(({ node }) => ({ ...node })) : []
 
     return (
@@ -70,10 +61,6 @@ const Shop = () => {
                 </Grid>}
 
                 <Grid item xs={12} md={9} container>
-                    <Grid item xs={8} sm={12}>
-                        <Breadcrumbs items={breadcrumbs} />
-                    </Grid>
-
                     {mobile && <Grid item xs={4} container justify="flex-end">
                         <Button endIcon={<FilterIcon fontSize="small" />} size="small" variant="text" onClick={handleFilterOpen}>
                             {t('filter')}

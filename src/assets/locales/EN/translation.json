@@ -71,17 +71,31 @@
         },
         {
             "title": "Clothing",
-            "level": 1
+            "values": ["TSHIRT", "HOODIE"],
+            "namespace": "categories",
+            "level": 1            
         },
         {
             "title": "T-shirts",
-            "value": "TSHIRTS",
+            "value": "TSHIRT",
+            "namespace": "categories",
+            "level": 2
+        },
+        {
+            "title": "Hoodies",
+            "value": "HOODIE",
             "namespace": "categories",
             "level": 2
         },
         {
             "title": "Shoes",
-            "value": "SHOES",
+            "values": ["SPORT"],
+            "namespace": "categories",
+            "level": 1
+        },
+        {
+            "title": "Sport",
+            "value": "SPORT",
             "namespace": "categories",
             "level": 2
         },

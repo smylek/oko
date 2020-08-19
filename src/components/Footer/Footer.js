@@ -58,11 +58,16 @@ const Footer = () => {
                     <Logo />
 
                     <Box display="flex" alignItems="center" mt={6}>
-                        {footerPages.map(x => <Box key={x.slug} mr={2} component={TransparentRouterLink} to={`/pages/${x.slug}`}>
-                            <Box component="span" color="text.secondary">
-                                {x.title}
+                        {footerPages.map((x, index, arr) => <React.Fragment key={x.slug}>
+                            <Box component={TransparentRouterLink} to={`/pages/${x.slug}`}>
+                                <Box component="span" color="text.secondary">
+                                    {x.title}
+                                </Box>
                             </Box>
-                        </Box>)}
+                            {index !== arr.length - 1 && <Box component="span" mx={1}>
+                                •
+                            </Box>}
+                        </React.Fragment>)}
                     </Box>
                 </Grid>
             </Grid>

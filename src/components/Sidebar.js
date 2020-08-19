@@ -4,7 +4,7 @@ import { Box, makeStyles, Typography } from '@material-ui/core'
 import clsx from 'clsx'
 import TransparentRouterLink from './TransparentRouterLink'
 import { shallowEqualObjects } from 'shallow-equal'
-
+import CheckIcon from '@material-ui/icons/Check'
 
 const getVariant = level => {
     switch (level) {
@@ -27,25 +27,32 @@ const useStyles = makeStyles(theme => ({
     uppercase: {
         textTransform: 'uppercase'
     },
+    label: {
+        marginRight: theme.spacing(1)
+    }
 }))
 
-const SidebarItem = React.memo(({ children, level = 0, to, isSelected, onClick }) => {
+const SidebarItem = React.memo(({ children, level = 0, to, isSelected: isSelectedFn, onClick }) => {
     const classes = useStyles()
 
     const props = to ? { to, component: TransparentRouterLink } : {}
+    
+    const isSelected = isSelectedFn && isSelectedFn()
 
-    return <Box pl={level * 2} py={.25} onClick={onClick}>
+    return <Box display="flex" alignItems="center" pl={level * 2} py={.25} onClick={onClick}>
         <Typography
             variant={getVariant(level)}
-            className={clsx({
+            className={clsx(classes.label, {
                 [classes.hoverable]: to || onClick,
-                [classes.selected]: isSelected && isSelected(),
+                [classes.selected]: isSelected,
                 [classes.uppercase]: level === 0
             })}
             {...props}
         >
             {children}
         </Typography>
+
+        {isSelected && <CheckIcon fontSize="small" />}
     </Box>
 }, shallowEqualObjects)
 

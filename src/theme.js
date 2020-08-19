@@ -74,9 +74,9 @@ export const createTheme = (({ dark = false } = {}) => {
         props: {
             MuiLink: {
                 underline: 'none',
-                TypographyClasses: {
-                    color: 'textSecondary'
-                },
+                //TypographyClasses: {
+                //    color: 'textSecondary'
+                //},
                 component: TransparentRouterLink,
             },
             MuiButton: {

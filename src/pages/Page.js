@@ -1,6 +1,5 @@
 import React from 'react'
 import { Box, Grid, Typography, makeStyles } from '@material-ui/core'
-import ShopSidebar from './Shop/ShopSidebar'
 import decorator from 'assets/images/static-page-decorator.png'
 import { useTranslation } from 'react-i18next'
 import Markdown from 'markdown-to-jsx';
@@ -9,7 +8,7 @@ import Sidebar from 'components/Sidebar'
 import { usePresence } from 'framer-motion'
 import Tilt from 'react-tilt'
 
-const tiltStyle = { width: '100%' }
+const tiltStyle = { width: '100%', textRendering: 'geometricPrecision' }
 
 const tiltOptions = {
     max: 2,

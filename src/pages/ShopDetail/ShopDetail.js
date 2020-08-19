@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Grid, Typography, makeStyles, CardMedia, Button, Select, MenuItem, useTheme, TextField, useMediaQuery } from '@material-ui/core';
+import { Box, Grid, Typography, makeStyles, CardMedia, Button, Select, MenuItem, useTheme, TextField, useMediaQuery, Link } from '@material-ui/core';
 import { usePresence, AnimatePresence, motion } from 'framer-motion';
 import { useQuery, gql, useLazyQuery } from '@apollo/client';
 import Breadcrumbs from 'components/Breadcrumbs';
@@ -12,6 +12,9 @@ import deepEqual from 'fast-deep-equal/react'
 import { computePriceLabel } from 'utils/price'
 import { shopifyClient, BuyButtonContext } from 'App';
 import ShopifyBuy from 'shopify-buy';
+import { defaultTo } from 'utils/functions';
+import ArrowBackIcon from '@material-ui/icons/ArrowBackIos'
+import GlassMagnifer from 'components/GlassMagnifer';
 
 const LOAD_VARIANT_BY_OPTIONS = gql`
 query GetVariantByOptions($slug: String!, $selectedOptions: [SelectedOptionInput!]!) {   
@@ -143,7 +146,7 @@ const VariantSelector = ({ option, handleOptionChange, error, mr }) => {
             id={`${option.name}-input-id`}
             name={option.name}
             key={option.name}
-            value={option.value}
+            value={defaultTo(option.value, '')}
             onChange={handleOptionChange}
         >
             {option.values.map(val => {
@@ -237,17 +240,6 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
         }
     }, [addVariantToCart, variantData, selectedVariantQuantity])
 
-    const breadcrumbs = React.useMemo(() => [
-        {
-            label: 'Clothing',
-            to: '/shop'
-        },
-        {
-            label: 'T-shirts',
-            to: '/shop'
-        },
-    ], [])
-
     if (loading && !data) return <div>Loading...</div>
 
     if (error) return <div>Error :(</div>
@@ -276,7 +268,12 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
 
     if (mobile) {
         return <Box px={2}>
-            <Breadcrumbs items={breadcrumbs} />
+            <Link to={'/shop'}>
+                <Box display="flex" alignItems="center">
+                    <ArrowBackIcon fontSize="inherit" color="inherit" />
+                    {t('backToShop')}
+                </Box>
+            </Link>
 
             <Box mb={2} />
 
@@ -385,7 +382,12 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
             </Grid>
             <Grid item md={9} container direction="column">
                 <Box px={1}>
-                    <Breadcrumbs items={breadcrumbs} />
+                    <Link to={'/shop'}>
+                        <Box display="flex" alignItems="center">
+                            <ArrowBackIcon fontSize="inherit" color="inherit" />
+                            {t('backToShop')}
+                        </Box>
+                    </Link>
 
                     <Box mb={2} />
 
@@ -471,7 +473,10 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
 
                         <Box position="relative" width="33%">
                             <AnimatePresence exitBeforeEnter>
-                                <CardMedia
+                                <GlassMagnifer
+                                    src={productImageSrc.transformedSrc}
+                                />
+                                {/* <CardMedia
                                     layoutId={`${data.handle}-product-image`}
                                     component={motion.div}
                                     image={productImageSrc.transformedSrc}
@@ -479,7 +484,7 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
                                     key={productImageSrc.transformedSrc}
                                     className={classes.image}
                                     animate={{ opacity: 1 }}
-                                />
+                                /> */}
                             </AnimatePresence>
                         </Box>
                     </Box>

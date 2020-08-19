@@ -45,6 +45,8 @@ const tiltOptions = {
     scale: 1
 }
 
+const transitionDuration = { duration: .2 }
+
 const ShopItemsCard = ({ data }) => {
     const classes = useStyles()
     const [hover, setHover] = React.useState(false)
@@ -74,7 +76,7 @@ const ShopItemsCard = ({ data }) => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <Tilt className="Tilt" options={tiltOptions} style={tiltStyle}>
+            <Tilt options={tiltOptions} style={tiltStyle}>
                 <Box flexGrow={1} display="flex" alignItems="center" position="relative" width="100%">
 
                     <AnimatePresence exitBeforeEnter>
@@ -91,7 +93,7 @@ const ShopItemsCard = ({ data }) => {
                             initial={"hidden"}
                             animate={!hover ? "show" : "hidden"}
                             exit={"show"}
-                            transition={{ duration: .2 }}
+                            transition={transitionDuration}
                         />
                         <CardMedia
                             component={motion.div}
@@ -104,7 +106,7 @@ const ShopItemsCard = ({ data }) => {
                             initial={"hidden"}
                             animate={hover ? "show" : "hidden"}
                             exit={"show"}
-                            transition={{ duration: .2 }}
+                            transition={transitionDuration}
                         />
                     </AnimatePresence>
                 </Box>

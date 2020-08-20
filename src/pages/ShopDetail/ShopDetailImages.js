@@ -2,6 +2,8 @@ import React from 'react'
 import { Box, CardMedia, makeStyles, Grid, useTheme, useMediaQuery } from '@material-ui/core'
 import { motion, AnimatePresence } from 'framer-motion'
 import get from 'lodash.get'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/swiper-bundle.css';
 
 const useStyles = makeStyles(theme => ({
     image: {
@@ -10,6 +12,10 @@ const useStyles = makeStyles(theme => ({
         position: 'absolute',
         top: 0,
         left: 0
+    },
+    mobileImage: {
+        width: '100%',
+        height: 'auto'
     },
     smallImage: {
         paddingBottom: '100%',
@@ -48,54 +54,88 @@ const ShopDetailImages = ({ layoutIdForFirstImage, items }) => {
 
     return (
         <Box width="100%" position="relative">
-            <Box className={classes.imageSpaceHolder} />
+            {mobile ? <>
+                <Swiper
+                    spaceBetween={50}
+                    slidesPerView={1}
+                >
 
-            <AnimatePresence>
-                <CardMedia
-                    layoutId={layoutIdForFirstImage}
-                    component={motion.div}
-                    image={transformedSrc}
-                    title={altText}
-                    key={transformedSrc}
-                    className={classes.image}
-                    variants={imageVariants}
-                    initial={"hidden"}
-                    animate={"show"}
-                    exit={"hidden"}
-                />
-            </AnimatePresence>
+                    {items.map(({ transformedSrc, altText = '' }, index) => (
+                        <SwiperSlide key={transformedSrc + index}>
+                            <img
+                                key={transformedSrc + index}
+                                alt={altText}
+                                src={transformedSrc}
+                                className={classes.mobileImage}
+                            />
+                            {/* <CardMedia
+                            layoutId={layoutIdForFirstImage}
+                            component={motion.div}
+                            image={transformedSrc}
+                            title={altText}
+                            key={transformedSrc}
+                            className={classes.image}
+                            variants={imageVariants}
+                            initial={"hidden"}
+                            animate={"show"}
+                            exit={"hidden"}
+                        /> */}
+                        </SwiperSlide>
+                    )
+                    )}
+                </Swiper>
 
-            {mobile ? <Box my={2}>
-                <Grid container spacing={2} justify="center">
-                    {items.map(({ transformedSrc, altText = '' }, index) => <Grid item key={transformedSrc + index}>
-                        <Box
-                            width={20}
-                            height={20}                         
-                            bgcolor={currentIndex === index ? "grey.900" : "grey.400"}
-                            borderRadius={'50%'}
-                            whileHover={{ opacity: 1 }}
-                            onClick={() => handleThumbnailClick(index)}
-                        />
-                    </Grid>)}
-                </Grid>
-            </Box>
-                :
-                <Box position="absolute" right={`calc(100% + ${theme.spacing(2)}px)`} top={0} zIndex={5} width={'22%'} maxWidth={104} display="flex" flexDirection="column">
-                    <Grid container spacing={2}>
-                        {items.map(({ transformedSrc, altText = '' }, index) => <Grid item xs={12} key={transformedSrc + index}>
-                            <CardMedia
-                                component={motion.div}
-                                image={transformedSrc}
-                                title={altText}
-                                key={transformedSrc}
-                                className={classes.smallImage}
-                                whileHover={hoverStyle}
+                <Box my={2}>
+                    <Grid container spacing={2} justify="center">
+                        {items.map(({ transformedSrc, altText = '' }, index) => <Grid item key={transformedSrc + index}>
+                            <Box
+                                width={20}
+                                height={20}
+                                bgcolor={currentIndex === index ? "grey.900" : "grey.400"}
+                                borderRadius={'50%'}
+                                whileHover={{ opacity: 1 }}
                                 onClick={() => handleThumbnailClick(index)}
                             />
                         </Grid>)}
                     </Grid>
-                </Box>}
-        </Box>)
+                </Box>
+            </>
+                :
+                <>
+                    <Box className={classes.imageSpaceHolder} />
+                    <AnimatePresence>
+                        <CardMedia
+                            layoutId={layoutIdForFirstImage}
+                            component={motion.div}
+                            image={transformedSrc}
+                            title={altText}
+                            key={transformedSrc}
+                            className={classes.image}
+                            variants={imageVariants}
+                            initial={"hidden"}
+                            animate={"show"}
+                            exit={"hidden"}
+                        />
+                    </AnimatePresence>
+
+                    <Box position="absolute" right={`calc(100% + ${theme.spacing(2)}px)`} top={0} zIndex={5} width={'22%'} maxWidth={104} display="flex" flexDirection="column">
+                        <Grid container spacing={2}>
+                            {items.map(({ transformedSrc, altText = '' }, index) => <Grid item xs={12} key={transformedSrc + index}>
+                                <CardMedia
+                                    component={motion.div}
+                                    image={transformedSrc}
+                                    title={altText}
+                                    key={transformedSrc}
+                                    className={classes.smallImage}
+                                    whileHover={hoverStyle}
+                                    onClick={() => handleThumbnailClick(index)}
+                                />
+                            </Grid>)}
+                        </Grid>
+                    </Box>
+                </>
+            }
+        </Box >)
 }
 
 export default ShopDetailImages

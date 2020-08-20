@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 
 const CartLineItem = ({ lineItem, updateQuantityInCart, removeLineItemInCart }) => {
   const classes = useStyles()
-  const [quantity, setQuantity] = React.useState(defaultTo(lineItem.quantity, 1))
+  const [quantity, setQuantity] = React.useState(lineItem?.quantity || 1)
 
   const syncQuantity = React.useCallback(() => {
     const lineItemId = lineItem.id
@@ -29,17 +29,19 @@ const CartLineItem = ({ lineItem, updateQuantityInCart, removeLineItemInCart }) 
 
   const debouncedSyncQuantity = React.useCallback(debounce(syncQuantity, 300), [syncQuantity])
 
+  React.useEffect(() => {
+    lineItem?.quantity !== quantity && debouncedSyncQuantity()
+  }, [debouncedSyncQuantity, quantity])
+
   const decrementQuantity = React.useCallback(() => {
     if (quantity > 1) {
       setQuantity(state => state - 1)
-      debouncedSyncQuantity()
     }
-  }, [debouncedSyncQuantity])
+  }, [quantity])
 
   const incrementQuantity = React.useCallback(() => {
-    setQuantity(state => state + 1)
-    debouncedSyncQuantity()
-  }, [debouncedSyncQuantity])
+    setQuantity(state => state + 1)    
+  }, [])
 
   const handleRemove = React.useCallback(() => {
     removeLineItemInCart(lineItem.id)

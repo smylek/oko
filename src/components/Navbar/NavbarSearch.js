@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { HOMEPAGE_ANIMATION_TIME } from 'constans';
+import { SearchTextContext, ShopContext } from 'App';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -59,12 +60,31 @@ const variants = {
 
 const NavbarSearch = ({ darkBg }) => {
     const [t] = useTranslation()
+    const ref = React.useRef()
     const classes = useStyles()
     const [open, setOpen] = React.useState(false)
+    const [value, setValue] = React.useState('')
+    const { filter, setFilter } = React.useContext(ShopContext)
 
-    const handleToggle = React.useCallback(() => { setOpen(state => !state) }, [])
+    const handleToggle = React.useCallback(() => {
+        !open && ref.current.focus()
+        setOpen(state => !state)
+    }, [])
+
+    const handleSearch = React.useCallback(e => setFilter({ ...filter, query: e.target.value}), [filter, setFilter])
+
+    const handleChange = React.useCallback(e => setValue(e.target.value), [])
+
+    const handleKeyDown = React.useCallback(e => e.key === 'Enter' && handleSearch(e), [handleSearch])
+
+    const handleBlur = React.useCallback(e => value === '' && setOpen(false), [])
 
     const animateVariant = open ? "open" : "closed"
+
+    const classesObj = React.useMemo(() => ({
+        root: clsx(classes.input, { [classes.inputClosed]: !open }),
+        input: classes.inputInput
+    }), [classes, open])
 
     return (
         <Box
@@ -81,12 +101,14 @@ const NavbarSearch = ({ darkBg }) => {
         >
             <Box flexGrow={1}>
                 <InputBase
+                    inputRef={ref}
+                    value={value}
+                    onChange={handleChange}
+                    onKeyDown={handleKeyDown}
+                    onBlur={handleBlur}
                     placeholder={t('startTyping')}
                     fullWidth
-                    classes={{
-                        root: clsx(classes.input, { [classes.inputClosed]: !open }),
-                        input: classes.inputInput
-                    }}
+                    classes={classesObj}
                 />
             </Box>
             <IconButton onClick={handleToggle}>

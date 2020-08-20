@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import ShopDetailImages from './ShopDetailImages';
 import deepEqual from 'fast-deep-equal/react'
 import { computePriceLabel } from 'utils/price'
-import { shopifyClient, BuyButtonContext } from 'App';
+import { shopifyClient, ShopContext } from 'App';
 import ShopifyBuy from 'shopify-buy';
 import { defaultTo } from 'utils/functions';
 import ArrowBackIcon from '@material-ui/icons/ArrowBackIos'
@@ -161,10 +161,14 @@ const VariantSelector = ({ option, handleOptionChange, error, mr }) => {
     );
 }
 
+const opacity0 = { opacity: 0 }
 
+const opacity1 = { opacity: 1 }
+
+const opacity1Delayed = { opacity: 1, transition: { delay: 0.6 } }
 
 const ShopDetail = ({ match: { params: { slug } } }) => {
-    const { addVariantToCart, openCheckout } = React.useContext(BuyButtonContext)
+    const { addVariantToCart, openCheckout } = React.useContext(ShopContext)
 
     const { t } = useTranslation()
     const theme = useTheme()
@@ -318,8 +322,8 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
                     display="flex"
                     flexDirection="column"
                     component={motion.div}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    initial={opacity0}
+                    animate={opacity1}
                 >
                     <Box my={2} display="flex" flexDirection="row" flexWrap="wrap">
                         {variantSelectors}
@@ -428,8 +432,8 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
                                 display="flex"
                                 flexDirection="column"
                                 component={motion.div}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
+                                initial={opacity0}
+                                animate={opacity1}
                             >
 
                                 <Box my={2}>
@@ -471,20 +475,26 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
                             </Box>}
                         </Box>
 
-                        <Box position="relative" width="33%">
+                        <Box position="relative" width="33%" animate={opacity1Delayed}>
                             <AnimatePresence exitBeforeEnter>
-                                <GlassMagnifer
+                                <CardMedia
                                     src={productImageSrc.transformedSrc}
-                                />
-                                {/* <CardMedia
+                                    image={productImageSrc.transformedSrc}
                                     layoutId={`${data.handle}-product-image`}
                                     component={motion.div}
-                                    image={productImageSrc.transformedSrc}
                                     title={data.title}
                                     key={productImageSrc.transformedSrc}
                                     className={classes.image}
-                                    animate={{ opacity: 1 }}
-                                /> */}
+                                    animate={opacity1}
+                                    style={{ position: 'absolute', top: 0, left: 0 }}
+                                />
+                                <GlassMagnifer
+                                    src={productImageSrc.transformedSrc}
+                                    image={productImageSrc.transformedSrc}
+                                    className={classes.image}
+                                    animate={opacity1Delayed}
+                                    
+                                />
                             </AnimatePresence>
                         </Box>
                     </Box>
@@ -511,8 +521,8 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
                             pr={6}
                             bgcolor={descriptionBgColor}
                             color={descriptionTextColor}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
+                            initial={opacity0}
+                            animate={opacity1}
                         >
                             <Typography variant="h2" gutterBottom fontStyle="italic">
                                 {data.title}

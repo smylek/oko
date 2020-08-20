@@ -8,7 +8,7 @@ import { motion } from 'framer-motion'
 import { HOMEPAGE_ANIMATION_TIME } from 'constans'
 import { shallowEqualObjects } from 'shallow-equal'
 import LanguageSelect from 'components/LanguageSelect'
-import { BuyButtonContext, MenuContext } from 'App'
+import { ShopContext, MenuContext } from 'App'
 import get from 'lodash.get'
 import { createTheme, theme } from 'theme'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -41,12 +41,15 @@ const variants = {
 
 const duration = { duration: HOMEPAGE_ANIMATION_TIME }
 
+
 const Navbar = ({ darkBg }) => {
     const classes = useStyles({ darkBg })
     const { t } = useTranslation();
-    const { checkout, handleCartOpen } = React.useContext(BuyButtonContext)
+    const { checkout, handleCartOpen } = React.useContext(ShopContext)
     const mobile = useMediaQuery(theme => theme.breakpoints.down('sm'))
     const { handleMenuClose, handleMenuOpen, isMenuOpen } = React.useContext(MenuContext)
+
+    const summedQuantity = ((checkout?.lineItems) || []).reduce((acc, current) => acc + current.quantity, 0)
 
     return (
         <Box
@@ -107,7 +110,7 @@ const Navbar = ({ darkBg }) => {
                                     component={motion.p}
                                     className={classes.bagButton}
                                 >
-                                    {t('bag')} {get(checkout, 'lineItems.length', 0)}
+                                    {t('bag')} {summedQuantity}
                                 </Typography>
                             </Box>
                         </Box>

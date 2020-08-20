@@ -8,7 +8,14 @@ import Sidebar from 'components/Sidebar'
 import { usePresence } from 'framer-motion'
 import Tilt from 'react-tilt'
 
-const tiltStyle = { width: '100%', textRendering: 'geometricPrecision' }
+const tiltStyle = {
+    width: '100%',
+    textRendering: 'geometricPrecision',
+    backfaceVisibility: 'hidden',
+    transform: 'translateZ(0)',
+    zoom: '1.005',
+    '-webkit-font-smoothing': 'antialiased'
+}
 
 const tiltOptions = {
     max: 2,

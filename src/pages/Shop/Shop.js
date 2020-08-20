@@ -8,6 +8,7 @@ import deepEqual from 'fast-deep-equal/react'
 import FilterIcon from '@material-ui/icons/FilterList'
 import DrawerHeader from 'components/DrawerHeader'
 import { useTranslation } from 'react-i18next'
+import { ShopContext } from 'App'
 
 const LOAD_COLLECTIONS = gql`
   query GetCollections {        
@@ -32,8 +33,8 @@ const LOAD_COLLECTIONS = gql`
 const Shop = () => {
     const { t } = useTranslation()
     const [isPresent, safeToRemove] = usePresence()
-    const { loading, error, data } = useQuery(LOAD_COLLECTIONS);
-    const [filter, setFilter] = React.useState({})
+    // const { loading, error, data } = useQuery(LOAD_COLLECTIONS);
+    const { filter, setFilter } = React.useContext(ShopContext)    
     const mobile = useMediaQuery(theme => theme.breakpoints.down('sm'))
     const [isFilterOpen, setIsFilterOpen] = React.useState(false)
 
@@ -61,7 +62,7 @@ const Shop = () => {
                 </Grid>}
 
                 <Grid item xs={12} md={9} container>
-                    {mobile && <Grid item xs={4} container justify="flex-end">
+                    {mobile && <Grid item xs={12} container justify="flex-end">
                         <Button endIcon={<FilterIcon fontSize="small" />} size="small" variant="text" onClick={handleFilterOpen}>
                             {t('filter')}
                         </Button>

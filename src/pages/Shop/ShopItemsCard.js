@@ -86,7 +86,6 @@ const ShopItemsCard = ({ data }) => {
                             component={motion.div}
                             layoutId={`${data.handle}-product-image`}
                             image={productImageSrc}
-                            title={data.title}
                             key={productImageSrc}
                             variants={imageVariants}
                             className={classes.image}
@@ -99,7 +98,6 @@ const ShopItemsCard = ({ data }) => {
                             component={motion.div}
                             layoutId={`${data.handle}-model-image`}
                             image={modelImageSrc}
-                            title={data.title}
                             key={modelImageSrc}
                             variants={imageVariants}
                             className={classes.image}

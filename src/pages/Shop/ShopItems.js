@@ -68,7 +68,9 @@ const computeQuery = filter => {
 
 
   for (const namespace in filter) {
-    if (namespace === 'categories') {
+    if (namespace === 'query') {
+      filter.query && result.push(`title:${filter.query}*`)
+    } else if (namespace === 'categories') {
       result.push(`(${filter[namespace].map(x => `product_type:${x}`).join(' OR ')})`)
     } else {
       result.push(`(${filter[namespace].map(x => `tag:${x}`).join(' OR ')})`)

@@ -32,14 +32,16 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-const SidebarItem = React.memo(({ children, level = 0, to, isSelected: isSelectedFn, onClick }) => {
+const SidebarItem = React.memo(({ children, level = 0, namespace, value, to, isSelected, onClick }) => {
     const classes = useStyles()
 
     const props = to ? { to, component: TransparentRouterLink } : {}
-    
-    const isSelected = isSelectedFn && isSelectedFn()
 
-    return <Box display="flex" alignItems="center" pl={level * 2} py={.25} onClick={onClick}>
+    const handleClick = React.useCallback(() => {
+        onClick && onClick(namespace, value)
+    }, [onClick, value])
+    
+    return <Box display="flex" alignItems="center" pl={level * 2} py={.25} onClick={handleClick}>
         <Typography
             variant={getVariant(level)}
             className={clsx(classes.label, {
@@ -66,12 +68,14 @@ const Sidebar = ({ items }) => {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
             >
-                {items.map(({ title, level, to, onClick, isSelected }) => <SidebarItem
+                {items.map(({ title, level, to, onClick, isSelected, value, values, namespace }) => <SidebarItem
                     key={title}
                     level={level}
                     to={to}
                     onClick={onClick}
                     isSelected={isSelected}
+                    value={values || value}
+                    namespace={namespace}
                 >
                     {title}
                 </SidebarItem>)}

@@ -22,7 +22,7 @@ export const shopifyClient = Client.buildClient({
   storefrontAccessToken: process.env.REACT_APP_SHOP_STOREFRONT_TOKEN,
 });
 
-export const BuyButtonContext = React.createContext();
+export const ShopContext = React.createContext();
 export const MenuContext = React.createContext();
 
 function App() {
@@ -31,6 +31,7 @@ function App() {
   const [checkout, setCheckout] = React.useState({
     lineItems: []
   })
+  const [filter, setFilter] = React.useState({ query: '' })
 
   const handleMenuOpen = React.useCallback(() => setIsMenuOpen(true), [setIsMenuOpen])
 
@@ -87,7 +88,9 @@ function App() {
     updateQuantityInCart,
     removeLineItemInCart,
     handleCartOpen,
-    openCheckout
+    openCheckout,
+    filter,
+    setFilter
   }), [
     isCartOpen,
     checkout,
@@ -95,7 +98,9 @@ function App() {
     updateQuantityInCart,
     removeLineItemInCart,
     handleCartOpen,
-    openCheckout
+    openCheckout,
+    filter,
+    setFilter
   ])
 
   const menuContextValue = React.useMemo(() => ({
@@ -127,7 +132,7 @@ function App() {
             />
 
             <MenuContext.Provider value={menuContextValue}>
-              <BuyButtonContext.Provider value={shopifyContextValue}>
+              <ShopContext.Provider value={shopifyContextValue}>
                 <Layout>
                   <Route
                     render={({ location }) => (
@@ -142,7 +147,7 @@ function App() {
                     )}
                   />
                 </Layout>
-              </BuyButtonContext.Provider>
+              </ShopContext.Provider>
             </MenuContext.Provider>
           </BrowserRouter>
         </React.Suspense>
@@ -153,7 +158,7 @@ function App() {
 
 App.whyDidYouRender = true
 
-export default React.memo(App, (a,b) => {
-  console.log({a,b})
-  return shallowEqualObjects(a,b)
+export default React.memo(App, (a, b) => {
+  console.log({ a, b })
+  return shallowEqualObjects(a, b)
 });

@@ -2,8 +2,9 @@ import React from 'react'
 import { Box, CardMedia, makeStyles, Grid, useTheme, useMediaQuery } from '@material-ui/core'
 import { motion, AnimatePresence } from 'framer-motion'
 import get from 'lodash.get'
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide, Controller } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
+
 
 const useStyles = makeStyles(theme => ({
     image: {
@@ -39,7 +40,24 @@ const imageVariants = {
     }
 }
 
-const hoverStyle = { opacity: 1 }
+const opacity1 = { opacity: 1 }
+
+const SwiperDots = ({ items, currentIndex, onSlideChange }) => (
+    <Box my={2}>
+        <Grid container spacing={2} justify="center">
+            {items.map(({ transformedSrc, altText = '' }, index) => <Grid item key={transformedSrc + index}>
+                <Box
+                    width={20}
+                    height={20}
+                    bgcolor={currentIndex === index ? "grey.900" : "grey.400"}
+                    borderRadius={'50%'}
+                    whileHover={opacity1}
+                    onClick={() => onSlideChange(index)}
+                />
+            </Grid>)}
+        </Grid>
+    </Box>
+)
 
 const ShopDetailImages = ({ layoutIdForFirstImage, items }) => {
     const classes = useStyles()
@@ -50,16 +68,24 @@ const ShopDetailImages = ({ layoutIdForFirstImage, items }) => {
     const current = get(items, `${currentIndex}`, {})
     const { transformedSrc, altText = '' } = current
 
-    const handleThumbnailClick = React.useCallback(nextIndex => setCurrentIndex(nextIndex), [])
+    const handleThumbnailClick = React.useCallback(nextIndex => setCurrentIndex(nextIndex), [setCurrentIndex])
+    const [swiper, setSwiper] = React.useState(null);
+
+    const handleSwipeChange = React.useCallback(nextSwiper => setCurrentIndex(nextSwiper.activeIndex), [])
+
+    const handleSlideChange = React.useCallback(nextIndex => {
+        swiper.slideTo(nextIndex)
+        setCurrentIndex(nextIndex)
+    }, [swiper, setCurrentIndex])
 
     return (
         <Box width="100%" position="relative">
             {mobile ? <>
                 <Swiper
-                    spaceBetween={50}
+                    onSwiper={setSwiper}
                     slidesPerView={1}
+                    onSlideChange={handleSwipeChange}
                 >
-
                     {items.map(({ transformedSrc, altText = '' }, index) => (
                         <SwiperSlide key={transformedSrc + index}>
                             <img
@@ -68,37 +94,16 @@ const ShopDetailImages = ({ layoutIdForFirstImage, items }) => {
                                 src={transformedSrc}
                                 className={classes.mobileImage}
                             />
-                            {/* <CardMedia
-                            layoutId={layoutIdForFirstImage}
-                            component={motion.div}
-                            image={transformedSrc}
-                            title={altText}
-                            key={transformedSrc}
-                            className={classes.image}
-                            variants={imageVariants}
-                            initial={"hidden"}
-                            animate={"show"}
-                            exit={"hidden"}
-                        /> */}
                         </SwiperSlide>
                     )
                     )}
                 </Swiper>
 
-                <Box my={2}>
-                    <Grid container spacing={2} justify="center">
-                        {items.map(({ transformedSrc, altText = '' }, index) => <Grid item key={transformedSrc + index}>
-                            <Box
-                                width={20}
-                                height={20}
-                                bgcolor={currentIndex === index ? "grey.900" : "grey.400"}
-                                borderRadius={'50%'}
-                                whileHover={{ opacity: 1 }}
-                                onClick={() => handleThumbnailClick(index)}
-                            />
-                        </Grid>)}
-                    </Grid>
-                </Box>
+                <SwiperDots
+                    items={items}
+                    currentIndex={currentIndex}
+                    onSlideChange={handleSlideChange}
+                />
             </>
                 :
                 <>
@@ -127,7 +132,7 @@ const ShopDetailImages = ({ layoutIdForFirstImage, items }) => {
                                     title={altText}
                                     key={transformedSrc}
                                     className={classes.smallImage}
-                                    whileHover={hoverStyle}
+                                    whileHover={opacity1}
                                     onClick={() => handleThumbnailClick(index)}
                                 />
                             </Grid>)}

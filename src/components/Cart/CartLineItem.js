@@ -61,7 +61,7 @@ const CartLineItem = ({ lineItem, updateQuantityInCart, removeLineItemInCart }) 
       }
     </Box>
 
-    <Box flexGrow={1}>
+    <Box flexGrow={1} ml={1}>
       <Typography variant="body2" color="textSecondary">
         {lineItem.title}
       </Typography>

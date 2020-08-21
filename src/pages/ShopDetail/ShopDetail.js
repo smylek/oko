@@ -132,7 +132,7 @@ const useCachedProductData = ({ client, slug }) => {
     }
 }
 
-const VariantSelector = ({ option, handleOptionChange, error, mr }) => {
+const VariantSelector = ({ value, option, handleOptionChange, error, mr }) => {
     return (<Box display="flex" alignItems="center" mr={mr}>
         <Typography variant="body1" id={`${option.name}-label-id`} component="label">
             {option.name}
@@ -146,7 +146,7 @@ const VariantSelector = ({ option, handleOptionChange, error, mr }) => {
             id={`${option.name}-input-id`}
             name={option.name}
             key={option.name}
-            value={defaultTo(option.value, '')}
+            value={value}
             onChange={handleOptionChange}
         >
             {option.values.map(val => {
@@ -165,7 +165,11 @@ const opacity0 = { opacity: 0 }
 
 const opacity1 = { opacity: 1 }
 
-const opacity1Delayed = { opacity: 1, transition: { delay: 0.6 } }
+const opacity1Delayed = { opacity: 1, transition: { delay: 1 } }
+
+const animationAnimate = { opacity: [1, 0] }
+
+const animationTransition = { times: [0, 1] }
 
 const ShopDetail = ({ match: { params: { slug } } }) => {
     const { addVariantToCart, openCheckout } = React.useContext(ShopContext)
@@ -475,26 +479,22 @@ const ShopDetail = ({ match: { params: { slug } } }) => {
                             </Box>}
                         </Box>
 
-                        <Box position="relative" width="33%" animate={opacity1Delayed}>
+                        <Box position="relative" width="33%">
                             <AnimatePresence exitBeforeEnter>
-                                <CardMedia
-                                    src={productImageSrc.transformedSrc}
-                                    image={productImageSrc.transformedSrc}
+                                <Box
                                     layoutId={`${data.handle}-product-image`}
+                                    width="100%"
                                     component={motion.div}
-                                    title={data.title}
-                                    key={productImageSrc.transformedSrc}
-                                    className={classes.image}
+                                    initial={opacity1}
                                     animate={opacity1}
-                                    style={{ position: 'absolute', top: 0, left: 0 }}
-                                />
-                                <GlassMagnifer
-                                    src={productImageSrc.transformedSrc}
-                                    image={productImageSrc.transformedSrc}
-                                    className={classes.image}
-                                    animate={opacity1Delayed}
-                                    
-                                />
+                                >
+                                    <GlassMagnifer
+                                        src={productImageSrc.transformedSrc}
+                                        image={productImageSrc.transformedSrc}
+                                        className={classes.image}
+                                        title={data.title}
+                                    />
+                                </Box>
                             </AnimatePresence>
                         </Box>
                     </Box>

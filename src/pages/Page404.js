@@ -1,14 +1,16 @@
 import React from 'react'
-import { Box, Grid, Typography } from '@material-ui/core'
+import { Box, Grid, Typography, useMediaQuery } from '@material-ui/core'
 
 const Page404 = ({ sidebarSlot }) => {
+    const mobile = useMediaQuery(theme => theme.breakpoints.down('sm'))
+
     return (
-        <Box px={6}>
+        <Box px={mobile ? 2 : 7}>
             <Grid container>
-                <Grid item md={2}>
+                <Grid item xs={12} md={2}>
                     {sidebarSlot}
                 </Grid>
-                <Grid item md={9} spacing={2}>
+                <Grid item xs={12} md={9}>
                     <Box px={1}>
                         <Typography variant="h1">
                             404

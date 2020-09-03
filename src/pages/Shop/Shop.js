@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Grid, useMediaQuery, IconButton, Button, SwipeableDrawer } from '@material-ui/core'
+import { Box, Grid, useMediaQuery, IconButton, Button, SwipeableDrawer, Chip } from '@material-ui/core'
 import { usePresence } from 'framer-motion'
 import ShopSidebar from './ShopSidebar'
 import { gql, useQuery } from '@apollo/client'
@@ -9,6 +9,8 @@ import FilterIcon from '@material-ui/icons/FilterList'
 import DrawerHeader from 'components/DrawerHeader'
 import { useTranslation } from 'react-i18next'
 import { ShopContext } from 'App'
+import get from 'lodash.get'
+import set from 'lodash.set'
 
 const LOAD_COLLECTIONS = gql`
   query GetCollections {        
@@ -28,13 +30,48 @@ const LOAD_COLLECTIONS = gql`
 }
 `;
 
+const ShopChips = ({ t, filter, onFilterChange }) => {
+    const handleDelete = React.useCallback(key => {
+        const nextFilter = { ...filter }
+        const arr = key.split('.')
+        const [value, ...address] = [arr.pop(), ...arr];
+
+        const group = get(filter, address, [])
+        const nextGroup = group.filter(x => x !== value)
+
+        set(nextFilter, address, nextGroup)
+        onFilterChange(nextFilter)
+    }, [filter, onFilterChange])
+
+    const createHandleDelete = value => () => handleDelete(value)
+
+    const items = React.useMemo(() => {
+        return Object.entries(filter).reduce((acc, [k, v]) => {
+            if (k !== 'query' && Array.isArray(v)) {
+                v.forEach(x => acc.push({
+                    label: `${k === 'mandatory-colors' ? t('mandatory') : ''} ${x}`,
+                    value: `${k}.${x}`
+                }))
+            }
+
+            return acc
+        }, [])
+    }, [filter])
+    console.log({ filter, items })
+
+    return <Box display="flex" flexWrap="wrap">
+        {items.map(({ label, value }) => <Box mr={1} mb={1}>
+            <Chip label={t(label)} onDelete={createHandleDelete(value)} />
+        </Box>)}
+    </Box>
+}
 
 
 const Shop = () => {
     const { t } = useTranslation()
     const [isPresent, safeToRemove] = usePresence()
     // const { loading, error, data } = useQuery(LOAD_COLLECTIONS);
-    const { filter, setFilter } = React.useContext(ShopContext)    
+    const { filter, setFilter } = React.useContext(ShopContext)
     const mobile = useMediaQuery(theme => theme.breakpoints.down('sm'))
     const [isFilterOpen, setIsFilterOpen] = React.useState(false)
 
@@ -67,6 +104,10 @@ const Shop = () => {
                             {t('filter')}
                         </Button>
                     </Grid>}
+
+                    <Grid item xs={12}>
+                        <ShopChips t={t} filter={filter} onFilterChange={setFilter} />
+                    </Grid>
 
                     <Grid item xs={12}>
                         <ShopItems filter={filter} />

@@ -9,7 +9,7 @@ const Drawer = ({ children, open, onClose, anchor, title }) => {
             open={open}
             onClose={onClose}
         >
-            <Box width={350} maxWidth={'100vw'} display="flex" flexDirection="column" height="100%">
+            <Box width={400} maxWidth={'100vw'} display="flex" flexDirection="column" height="100%">
                 <DrawerHeader
                     title={title}
                     onClose={onClose}

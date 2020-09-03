@@ -48,7 +48,7 @@ const CartLineItem = ({ lineItem, updateQuantityInCart, removeLineItemInCart }) 
   }, [removeLineItemInCart, lineItem])
 
   return <Box display="flex" mb={2}>
-    <Box width={70} maxWidth={70}>
+    <Box width={75} maxWidth={75}>
       {
         lineItem.variant.image ? <CardMedia
           image={lineItem.variant.image.src}
@@ -61,7 +61,7 @@ const CartLineItem = ({ lineItem, updateQuantityInCart, removeLineItemInCart }) 
       }
     </Box>
 
-    <Box flexGrow={1} ml={1}>
+    <Box flexGrow={1} ml={2}>
       <Typography variant="body2" color="textSecondary">
         {lineItem.title}
       </Typography>

@@ -94,6 +94,12 @@ const Navbar = ({ darkBg }) => {
                                     {t('shop')}
                                 </Typography>
                             </Grid>
+
+                            <Grid item>
+                                <Typography color="inherit" variant="h3" component={TransparentRouterLink} useNavLink to="/pages/about" activeClassName={classes.linkActive}>
+                                    {t('about')}
+                                </Typography>
+                            </Grid>
                         </>}
 
                         <Grid item style={{ marginLeft: 'auto' }}>
@@ -117,7 +123,7 @@ const Navbar = ({ darkBg }) => {
                     </Grid>
                 </Grid>
 
-                {mobile && <SwipeableDrawer anchor="left" open={isMenuOpen} onClose={handleMenuClose} component={motion.div} animate>
+                {mobile && <SwipeableDrawer anchor="left" open={isMenuOpen} onOpen={handleMenuOpen} onClose={handleMenuClose} component={motion.div} animate>
                     <Box width={300} maxWidth="100%" p={4}>
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
@@ -135,6 +141,12 @@ const Navbar = ({ darkBg }) => {
                             <Grid item xs={12}>
                                 <Typography color="inherit" variant="h3" component={TransparentRouterLink} useNavLink to="/shop" activeClassName={classes.linkActive}>
                                     {t('shop')}
+                                </Typography>
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Typography color="inherit" variant="h3" component={TransparentRouterLink} useNavLink to="/pages/about" activeClassName={classes.linkActive}>
+                                    {t('about')}
                                 </Typography>
                             </Grid>
                         </Grid>

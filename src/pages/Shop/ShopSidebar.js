@@ -5,23 +5,36 @@ import Sidebar from 'components/Sidebar'
 import get from 'lodash.get'
 import flatten from 'lodash.flatten'
 
+const arrIncludesArr = (arr1, arr2) => arr2.every(o => arr1.includes(o))
+
 const toggleOrFix = (_filter, namespace, value) => {
-    return get(_filter, namespace, []).includes(value) ?
-        get(_filter, namespace, []).filter(y => y !== value) :
-        [...get(_filter, namespace, []), value]
+    const arr = get(_filter, namespace, [])
+
+    if (Array.isArray(value)) {               
+        if (arrIncludesArr(arr, value)) {            
+            return arr.filter(o => !value.includes(o))
+        } else {
+            return [...new Set([...arr, ...value])]
+        }
+    }
+    else {
+        return arr.includes(value) ?
+            arr.filter(y => y !== value) :
+            [...arr, value]
+    }
 }
-
-
 
 const ShopSidebar = ({ filter, onFilterChange }) => {
     const [t] = useTranslation()
 
-    const handleChange = React.useCallback((namespace, nextValue) => onFilterChange({
-        ...filter,
-        [namespace]: nextValue ?
-            toggleOrFix(filter, namespace, nextValue) :
-            [...nextValue]
-    }), [filter, onFilterChange])
+    const handleChange = React.useCallback((namespace, nextValue) => {
+        onFilterChange({
+            ...filter,
+            [namespace]: nextValue ?
+                toggleOrFix(filter, namespace, nextValue) :
+                [...nextValue]
+        })
+    }, [filter, onFilterChange])
 
 
     const createClickableItem = React.useCallback(x => {

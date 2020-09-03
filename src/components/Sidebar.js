@@ -41,7 +41,7 @@ const SidebarItem = React.memo(({ children, level = 0, namespace, value, to, isS
         onClick && onClick(namespace, value)
     }, [onClick, value])
     
-    return <Box display="flex" alignItems="center" pl={level * 2} py={.25} onClick={handleClick}>
+    return <Box display="flex" alignItems="center" pl={level * 2} py={.5} onClick={handleClick}>
         <Typography
             variant={getVariant(level)}
             className={clsx(classes.label, {

@@ -9,9 +9,6 @@ import Drawer from 'components/Drawer';
 const useStyles = makeStyles(theme => ({
   uppercase: {
     textDecoration: 'uppercase'
-  },
-  checkoutButton: {
-    borderRadius: 0
   }
 }))
 
@@ -45,11 +42,11 @@ const Cart = ({
   
   return (
     <Drawer title={t('yourCart')} open={isCartOpen} onClose={handleCartClose}>
-      <Box flexGrow={1} px={2}>
+      <Box flexGrow={1} pl={2} pr={3}>
         {lineItems}
       </Box>
 
-      <Box px={2}>
+      <Box pl={2} pr={3}>
         {priceComponents.map(({ name, key }) => <Box
           key={key}
           display="flex"
@@ -62,8 +59,8 @@ const Cart = ({
         </Box>)}
       </Box>
 
-      <Box mt={2} p={.5}>
-        <Button className={classes.checkoutButton} fullWidth onClick={openCheckout}>
+      <Box mt={2} mb={1} pl={2} pr={3}>
+        <Button fullWidth onClick={openCheckout}>
           {t('checkout')}
         </Button>
       </Box>

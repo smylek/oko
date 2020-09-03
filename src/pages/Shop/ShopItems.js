@@ -1,14 +1,21 @@
 import React from 'react'
-import { Box, Grid } from '@material-ui/core'
+import { Box, Grid, Button } from '@material-ui/core'
 import { gql, useQuery } from '@apollo/client'
 import ShopItemsCard from './ShopItemsCard';
 import { shallowEqualObjects } from 'shallow-equal';
 import deepEqual from 'fast-deep-equal/react'
+import set from 'lodash.set';
+import { cloneDeep } from '@apollo/client/utilities';
 
 export const LOAD_ITEMS = gql`
-query GetProducts($query: String) {    
-    products(first: 20, query: $query) {
+query GetProducts($perPage: Int = 5, $query: String, $cursor: String) {    
+    products(first: $perPage, query: $query, after: $cursor) {
+      pageInfo {
+        hasNextPage
+        hasPreviousPage
+      }
       edges {
+        cursor
         node {
           id
           handle
@@ -82,7 +89,25 @@ const computeQuery = filter => {
 
 const ShopItems = ({ filter }) => {
   const query = computeQuery(filter)
-  const { loading, error, data, refetch } = useQuery(LOAD_ITEMS);
+  const { loading, error, data, refetch, fetchMore } = useQuery(LOAD_ITEMS);
+
+  const handleLoadMore = React.useCallback(() => {
+    console.log(data)
+    fetchMore({
+      variables: {
+        cursor: data.products.edges[data.products.edges.length - 1].cursor
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+        const result = cloneDeep(prev)
+
+        set(result, 'products.edges', [...prev.products.edges, ...fetchMoreResult.products.edges])
+
+        console.log({ result })
+        return result
+      }
+    })
+  }, [data, fetchMore])
 
   React.useEffect(() => {
     !loading && refetch({ query })
@@ -94,8 +119,11 @@ const ShopItems = ({ filter }) => {
 
   return (
     <Box minHeight="80vh" p={1}>
+      <Button onClick={handleLoadMore}>
+        wczytaj wiecej
+      </Button>
       <Grid container spacing={2}>
-        {data.products.edges.map(({ node: item }) => <Grid key={item.id} item xs={6} sm={6} md={4} xl={3}>
+        {data.products.edges.map(({ node: item }, index) => <Grid key={item.id + index} item xs={6} sm={6} md={4} xl={3}>
           <ShopItemsCard data={item} />
         </Grid>)}
       </Grid>

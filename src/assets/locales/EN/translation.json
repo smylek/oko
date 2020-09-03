@@ -8,25 +8,47 @@
     "quanity": "Quanity",
     "pages": [
         {
+            "slug": "about",
+            "title": "About",
+            "showInFooter": true,
+            "bodyDecorator": "left",
+            "body": "## OKO™   \n\n\nOKO™ is a fashion label rooted in current culture at a taste-level particular to now. With a specific opinion and not necessarily same with vision seasonal men's and women's collections are offered.  \n\n\nAll products are based in a concept that adapts from season to season.  \n\n\nManufacturing is based in Poland with a core value of the brand to be made from the best available and particular opinion regarding fabric, fit and fabrication. \n\n\nThe result is to be a young brand embracing the now in a sophisticated manner."
+        },
+        {
             "slug": "privacy-policy",
             "title": "Privacy Policy",
             "showInFooter": true,
             "bodyDecorator": "left",
-            "body": "# Raz dwa trzy body  \nLorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ultricies cursus diam, ut feugiat arcu gravida et. Duis nec metus eu massa vulputate laoreet. Aenean condimentum ac est volutpat mattis. Nulla lacinia iaculis auctor. Proin tristique gravida neque at dictum. Morbi imperdiet porttitor dui, non feugiat ex euismod sit amet.  \nPellentesque sed lorem nulla. Duis bibendum sit amet ex non bibendum. Mauris maximus ornare nulla ac gravida. Maecenas interdum urna non mauris vestibulum viverra. Duis posuere sem magna, volutpat dictum massa egestas quis. Praesent lobortis urna in lectus dapibus gravida. Pellentesque consequat fermentum sapien vitae dapibus. Curabitur accumsan, enim ut aliquet volutpat, odio nunc posuere sapien, vel efficitur magna nulla ut augue. Mauris ornare, diam et tempor pellentesque, dui mi aliquet lectus, vehicula egestas ex nisl sit amet sapien. Cras lacinia leo in dui fringilla, sit amet tincidunt dui scelerisque. Donec euismod consequat metus, vitae facilisis turpis elementum in. Pellentesque eu arcu nec nulla lobortis tristique a eu nisi. Curabitur vehicula mi vitae cursus laoreet. Sed et tellus nibh. Nam nibh tellus, luctus a venenatis eget, tristique ullamcorper magna. Curabitur finibus rutrum aliquam. Nam ut egestas justo. Aenean sem magna, bibendum non tempus eget, facilisis vel tellus. Ut sit amet sagittis nulla, eget facilisis eros. Vestibulum luctus purus est, a dapibus lacus efficitur vitae. "
+            "body": "## OKO™ \nLorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ultricies cursus diam, ut feugiat arcu gravida et. Duis nec metus eu massa vulputate laoreet. Aenean condimentum ac est volutpat mattis. Nulla lacinia iaculis auctor. Proin tristique gravida neque at dictum. Morbi imperdiet porttitor dui, non feugiat ex euismod sit amet. \n\nPellentesque sed lorem nulla. Duis bibendum sit amet ex non bibendum. Mauris maximus ornare nulla ac gravida. Maecenas interdum urna non mauris vestibulum viverra. Duis posuere sem magna, volutpat dictum massa egestas quis. Praesent lobortis urna in lectus dapibus gravida. Pellentesque consequat fermentum sapien vitae dapibus. Curabitur accumsan, enim ut aliquet volutpat, odio nunc posuere sapien, vel efficitur magna nulla ut augue. Mauris ornare, diam et tempor pellentesque, dui mi aliquet lectus, vehicula egestas ex nisl sit amet sapien. Cras lacinia leo in dui fringilla, sit amet tincidunt dui scelerisque. Donec euismod consequat metus, vitae facilisis turpis elementum in. Pellentesque eu arcu nec nulla lobortis tristique a eu nisi. Curabitur vehicula mi vitae cursus laoreet. Sed et tellus nibh. Nam nibh tellus, luctus a venenatis eget, tristique ullamcorper magna. Curabitur finibus rutrum aliquam. Nam ut egestas justo. Aenean sem magna, bibendum non tempus eget, facilisis vel tellus. Ut sit amet sagittis nulla, eget facilisis eros. Vestibulum luctus purus est, a dapibus lacus efficitur vitae. "
         },
         {
             "slug": "cookies",
             "title": "Cookies",
             "showInFooter": true,
             "bodyDecorator": "right",
-            "body": "# Cookies"
+            "body": "## Cookies"
         },
         {
             "slug": "terms-of-use",
             "title": "Terms of use",
             "showInFooter": true,
             "bodyDecorator": null,
-            "body": "# Terms of use"
+            "body": "## Terms of use"
+        },
+        {
+            "slug": "contact",
+            "title": "Contact",
+            "showInFooter": true,
+            "bodyDecorator": "right",
+            "justify": "right",
+            "body": "## Contact OKO™ \n ⠀ \n\n\n**Email**\n\n\ncontact@oko.gg  \n\n ⠀  \n\n **Phone**\n\n\n+48 691 399 735"
+        },
+        {
+            "slug": "customer-service",
+            "title": "Customer Service",
+            "showInFooter": true,
+            "bodyDecorator": "left",
+            "body": "## Customer service \nLorem ipsum dolor sit amet, consectetur adipiscing elit."
         }
     ],
     "pagesMenu": [
@@ -42,6 +64,11 @@
         {
             "title": "Customer Service",
             "to": "/pages/customer-service",
+            "level": 1
+        },
+        {
+            "title": "Contact",
+            "to": "/pages/contact",
             "level": 1
         },
         {
